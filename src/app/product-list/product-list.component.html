@@ -13,11 +13,34 @@
 
   <div class="album py-5 bg-light">
     <div class="container">
+        <div class="row">
+        <div class="col-xs-8 col-xs-offset-2">
+          <div class="input-group" align="center">
+            <div class="input-group-btn search-panel">
+              <ul class="d-inline-block" ngbDropdown #myDrop="ngbDropdown">
+                <button type="button" class="btn btn-outline-primary mr-2" id="dropdownManual" ngbDropdownAnchor (focus)="myDrop.open()">
+                  <span id="search_concept">Wybierz kategorie</span> <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu" ngbDropdownMenu aria-labelledby="dropdownManual">
+                  <li *ngFor="let category of selectedCategories">
+                    <input class="dropdown-item" type="checkbox" [(ngModel)]="category.selected" [ngModelOptions]="{standalone: true}" (change)="changeSelection(category)">{{category.category}}
+                  </li>
+                </ul>
+              </ul>
+              <input type="hidden" name="search_param" value="all" id="search_param">
+              <input (input)="filterProductList()" [(ngModel)]="searchText" [ngModelOptions]="{standalone: true}">
+              <span class="input-group-btn">
+              <button class="btn btn-default" type="button"><span class="fa fa-search"></span></button>
+            </span>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <div class="row" >
         <app-product class="col-md-4"
                      [product]="product"
-                     *ngFor="let product of productList"
+                     *ngFor="let product of filteredProductList"
                      (remove)="removeEventListener($event)"
         ></app-product>
       </div>
