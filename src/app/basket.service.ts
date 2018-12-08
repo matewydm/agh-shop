@@ -12,7 +12,6 @@ export class BasketService {
   getBasket(): BasketProduct[] {
     const item = localStorage.getItem('basket');
     if (item) {
-      console.log(item);
       return JSON.parse(item);
     } else {
       return [];
@@ -51,5 +50,25 @@ export class BasketService {
       console.log('No ogarnij, najpierw dodaj jak chcesz usuwać');
     }
     localStorage.setItem('basket', JSON.stringify(basket));
+  }
+
+  removeItem(item: BasketProduct) {
+    const basket = this.getBasket();
+    basket.splice(basket.indexOf(item), 1);
+    localStorage.setItem('basket', JSON.stringify(basket));
+  }
+
+  getFullItemPrice(item) {
+    const fullPrice = item.amount * item.product.price;
+    return Math.round(fullPrice * 100) / 100;
+  }
+
+  getOrderPrice() {
+    const basket = this.getBasket();
+    let orderPrice = 0;
+    for (const item of basket) {
+      orderPrice += this.getFullItemPrice(item);
+    }
+    return Math.round(orderPrice * 100) / 100;
   }
 }

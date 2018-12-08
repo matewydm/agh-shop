@@ -12,21 +12,25 @@
           <thead>
           <tr>
               <th scope="col"> </th>
-              <th scope="col">Product</th>
-              <th scope="col">Available</th>
-              <th scope="col" class="text-center">Quantity</th>
-              <th scope="col" class="text-right">Price</th>
-              <th> </th>
+              <th scope="col" class="text-center">Nazwa</th>
+              <th scope="col" class="text-center">Dostępność</th>
+              <th scope="col" class="text-center">Zamówiona ilość</th>
+              <th scope="col" class="text-right">Cena</th>
+              <th scope="col" class="text-center">Edycja </th>
           </tr>
           </thead>
           <tbody>
           <tr *ngFor="let item of getBasket()">
-                  <td><img height="50px" src={{item.product.link}} /> </td>
-                  <td>{{item.product.name}}</td>
-                  <td>{{item.product.description}}</td>
-                  <td><input class="form-control" type="text" value="1" /></td>
-                  <td class="text-right">{{item.product.price}} zł</td>
-                  <td class="text-right"><button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> </button> </td>
+                  <td align="center"><img height="50px" src={{item.product.link}} /> </td>
+                  <td align="center">{{item.product.name}}</td>
+                  <td align="center">{{item.product.description}}</td>
+                  <td align="center">{{item.amount}}</td>
+                  <td class="text-right">{{getFullItemPrice(item)}} zł</td>
+                  <td class="text-center">
+                    <button id="addProduct" class="btn btn-sm btn-default" (click)="addProductToBasket(item.product)"><i class="fa fa-plus"></i> </button>
+                    <button id="subtractProduct" class="btn btn-sm btn-default" (click)="removeProductFromBasket(item.product)"><i class="fa fa-minus"></i> </button>
+                    <button id="removeItem" class="btn btn-sm btn-danger" (click)="removeItemFromBasket(item)"><i class="fa fa-trash"></i> </button>
+                  </td>
           </tr>
 
           <tr>
@@ -34,8 +38,8 @@
             <td></td>
             <td></td>
             <td></td>
-            <td>Sub-Total</td>
-            <td class="text-right">255,90 €</td>
+            <td>Wartość zamówienia</td>
+            <td class="text-right">{{getOrderPrice()}}</td>
           </tr>
           </tbody>
         </table>
@@ -44,10 +48,10 @@
     <div class="col mb-2">
       <div class="row">
         <div class="col-sm-12  col-md-6">
-          <button class="btn btn-block btn-light">Continue Shopping</button>
+          <button class="btn btn-block btn-light">Kontynuuj zakupy</button>
         </div>
         <div class="col-sm-12 col-md-6 text-right">
-          <button class="btn btn-lg btn-block btn-success text-uppercase">Checkout</button>
+          <button class="btn btn-lg btn-block btn-success text-uppercase">Potwierdz zamówienie</button>
         </div>
       </div>
     </div>
