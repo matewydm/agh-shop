@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 import { FormsModule } from '@angular/forms';
 
@@ -15,7 +16,9 @@ import { CheckoutComponent } from './checkout/checkout.component';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireAuthModule } from 'angularfire2/auth';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { environment } from '../environments/environment';
+import { ProductCreatorComponent } from './product-creator/product-creator.component';
 
 @NgModule({
   declarations: [
@@ -24,18 +27,22 @@ import { environment } from '../environments/environment';
     ProductListComponent,
     NavbarComponent,
     FooterComponent,
-    CheckoutComponent
+    CheckoutComponent,
+    ProductCreatorComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),
+    AngularFireDatabaseModule,
     AngularFirestoreModule,
     AngularFireAuthModule,
     BrowserModule,
     FormsModule,
     NgbModule,
+    NgSelectModule,
     AppRoutingModule
   ],
-  providers: [ProductService],
-  bootstrap: [AppComponent]
+  providers: [ProductService, NgbActiveModal],
+  bootstrap: [AppComponent],
+  entryComponents: [ProductCreatorComponent]
 })
 export class AppModule { }

@@ -29,4 +29,8 @@ export class ProductComponent implements OnInit {
     this.remove.emit(product);
   }
 
+  addToList (product) {
+    this.remove.emit(product);
+  }
+
 }

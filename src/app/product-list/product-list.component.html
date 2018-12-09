@@ -5,7 +5,7 @@
       <h1 class="jumbotron-heading">Album example</h1>
       <p class="lead text-muted">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don't simply skip over it entirely.</p>
       <p>
-        <a href="#" class="btn btn-primary my-2">Main call to action</a>
+        <button class="btn btn-primary my-2" (click)="openFormModal()">Dodaj nowy produkt</button>
         <a href="#" class="btn btn-secondary my-2">Secondary action</a>
       </p>
     </div>
@@ -23,15 +23,16 @@
                 </button>
                 <ul class="dropdown-menu" role="menu" ngbDropdownMenu aria-labelledby="dropdownManual">
                   <li *ngFor="let category of selectedCategories">
-                    <input class="dropdown-item" type="checkbox" [(ngModel)]="category.selected" [ngModelOptions]="{standalone: true}" (change)="changeSelection(category)">{{category.category}}
+                    <input class="dropdown-item" type="checkbox" [(ngModel)]="category.selected" [ngModelOptions]="{standalone: true}" (change)="filterProductList()">{{category.category}}
                   </li>
                 </ul>
               </ul>
               <input type="hidden" name="search_param" value="all" id="search_param">
               <input (input)="filterProductList()" [(ngModel)]="searchText" [ngModelOptions]="{standalone: true}">
               <span class="input-group-btn">
-              <button class="btn btn-default" type="button"><span class="fa fa-search"></span></button>
-            </span>
+                <button class="btn btn-default" type="button"><span class="fa fa-search"></span></button>
+              </span>
+              <ng-select class="form-control input-lg pull-right" [(ngModel)]="pageSize" (change)="refreshPage()" [items]="pageSizes"></ng-select>
             </div>
           </div>
         </div>
@@ -40,11 +41,19 @@
       <div class="row" >
         <app-product class="col-md-4"
                      [product]="product"
-                     *ngFor="let product of filteredProductList"
+                     *ngFor="let product of filteredProductList | async"
                      (remove)="removeEventListener($event)"
         ></app-product>
       </div>
+
+
+      <div class="row" >
+        <ngb-pagination [collectionSize]="allSize" [pageSize]="pageSize" (pageChange)="setPage($event)" [(page)]="pager.currentPage" aria-label="Default pagination"></ngb-pagination>
+
+        <!--</ul>-->
+      </div>
     </div>
   </div>
+
 
 </main>
