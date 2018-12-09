@@ -45,7 +45,19 @@ export class ProductListComponent implements OnInit {
   }
 
   removeEventListener(product) {
-    // this.productList.splice(this.productList.(product), 1);
+    this.productService.removeProduct(product);
+  }
+
+  subtractEventListener(product) {
+    if (product.amount > 0) {
+      product.amount--;
+      this.productService.addProduct(product);
+    }
+  }
+
+  addEventListener(product) {
+    product.amount++;
+    this.productService.addProduct(product);
   }
 
   filterProductList() {

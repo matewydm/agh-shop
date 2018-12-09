@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {AdminService} from './admin.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,10 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'agh-shop';
+
+  constructor(private adminService: AdminService) {}
+
+  isAdmin(): boolean {
+    return this.adminService.isAuthorized();
+  }
 }

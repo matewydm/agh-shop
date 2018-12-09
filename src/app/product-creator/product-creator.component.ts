@@ -16,6 +16,7 @@ export class ProductCreatorComponent implements OnInit {
   price: number;
   category: string;
   description: string;
+  amount: number;
 
   constructor(public activeModal: NgbActiveModal, private productService: ProductService) { }
 
@@ -27,7 +28,7 @@ export class ProductCreatorComponent implements OnInit {
   }
 
   createProduct() {
-    this.productService.addProduct(new Product(this.id, this.name, this.link, this.price, this.category, this.description));
+    this.productService.addProduct(new Product(this.id, this.name, this.link, this.price, this.category, this.description, this.amount));
     this.activeModal.close();
   }
 }

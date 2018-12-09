@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Product} from '../model/product';
 import {BasketService} from '../basket.service';
+import {AdminService} from '../admin.service';
 
 @Component({
   selector: 'app-product',
@@ -11,8 +12,10 @@ export class ProductComponent implements OnInit {
 
   @Input() product: Product;
   @Output() remove = new EventEmitter();
+  @Output() add = new EventEmitter();
+  @Output() subtract = new EventEmitter();
 
-  constructor(private basketService: BasketService) { }
+  constructor(private basketService: BasketService, private adminService: AdminService) { }
 
   ngOnInit() {
   }
@@ -25,12 +28,16 @@ export class ProductComponent implements OnInit {
     this.basketService.subtract(product);
   }
 
+  subtractFromList(product) {
+    this.subtract.emit(product);
+  }
+
   removeFromList(product) {
     this.remove.emit(product);
   }
 
-  addToList (product) {
-    this.remove.emit(product);
+  addToList(product) {
+    this.add.emit(product);
   }
 
 }

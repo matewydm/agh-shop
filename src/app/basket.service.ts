@@ -22,12 +22,12 @@ export class BasketService {
     const basket = this.getBasket();
     let isStored = false;
     for (const item of basket) {
-      if (item.product.id === product.id) {
+      if (item.product.id === product.id && item.amount + 1 > item.product.amount) {
         item.amount++;
         isStored = true;
       }
     }
-    if (!isStored) {
+    if (!isStored && product.amount >= 1) {
       const basketProduct = new BasketProduct(1, product);
       basket.push(basketProduct);
     }

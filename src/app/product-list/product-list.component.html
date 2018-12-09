@@ -43,6 +43,8 @@
                      [product]="product"
                      *ngFor="let product of filteredProductList | async"
                      (remove)="removeEventListener($event)"
+                     (subtract)="subtractEventListener($event)"
+                     (add)="addEventListener($event)"
         ></app-product>
       </div>
 
