@@ -1,12 +1,10 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ProductService} from '../product.service';
 import {Product} from '../model/product';
 import {CategorySelect} from '../model/categorySelect';
 import {Observable} from 'rxjs';
 import {ProductFilter} from '../model/productFilter';
 import {PagerService} from '../pager.service';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {ProductCreatorComponent} from '../product-creator/product-creator.component';
 
 @Component({
   selector: 'app-product-list',
@@ -16,8 +14,7 @@ import {ProductCreatorComponent} from '../product-creator/product-creator.compon
 export class ProductListComponent implements OnInit {
 
   constructor(private productService: ProductService,
-              private pagerService: PagerService,
-              private modalService: NgbModal) {
+              private pagerService: PagerService) {
   }
 
   searchText: string;
@@ -64,15 +61,6 @@ export class ProductListComponent implements OnInit {
     this.updateFilters(this.filter.startIndex, this.filter.endIndex);
     this.filteredProductList = this.productService.getProducts(this.filter);
     this.productService.getProductsCount(this.filter).subscribe(e => this.allSize = e.size);
-  }
-
-  openFormModal() {
-    const modalRef = this.modalService.open(ProductCreatorComponent);
-    modalRef.result.then((result) => {
-      console.log(result);
-    }).catch((error) => {
-      console.log(error);
-    });
   }
 
   refreshPage() {

@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
+import {Observable} from 'rxjs';
+import {User} from 'firebase';
 
 
 @Injectable({
@@ -7,24 +9,20 @@ import { AngularFireAuth } from 'angularfire2/auth';
 })
 export class AdminService {
 
-  user: any;
+  user: Observable<User>;
 
-  constructor(private auth: AngularFireAuth) { }
-
-  logIn(email: string, password: string) {
-    this.auth.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
-      console.log(error.message);
-    });
+  constructor(private fireAuth: AngularFireAuth) {
+    this.user = fireAuth.authState;
   }
 
-  changeStateListener() {
-    this.auth.auth().onAuthStateChanged(function(user) {
-      if (user) {
-        this.user = user;
-      } else {
-        console.log('User signed out');
-      }
-    });
+  logIn(email: string, password: string) {
+    this.fireAuth.auth.signInWithEmailAndPassword(email, password)
+      .then(value => {
+        console.log('Nice, it worked!', value);
+      })
+      .catch(error => {
+        console.log('Something went wrong:', error.message);
+      });
   }
 
   isAuthorized(): boolean {

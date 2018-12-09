@@ -19,6 +19,8 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { environment } from '../environments/environment';
 import { ProductCreatorComponent } from './product-creator/product-creator.component';
+import { AdminComponent } from './admin/admin.component';
+import { AdminLoginComponent } from './admin-login/admin-login.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,9 @@ import { ProductCreatorComponent } from './product-creator/product-creator.compo
     NavbarComponent,
     FooterComponent,
     CheckoutComponent,
-    ProductCreatorComponent
+    ProductCreatorComponent,
+    AdminComponent,
+    AdminLoginComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),
@@ -43,6 +47,6 @@ import { ProductCreatorComponent } from './product-creator/product-creator.compo
   ],
   providers: [ProductService, NgbActiveModal],
   bootstrap: [AppComponent],
-  entryComponents: [ProductCreatorComponent]
+  entryComponents: [ProductCreatorComponent, AdminLoginComponent]
 })
 export class AppModule { }

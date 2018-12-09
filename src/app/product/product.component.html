@@ -17,8 +17,10 @@
         <button id="removeItem" class="btn btn-sm btn-danger" (click)="removeFromList(product)"><i class="fa fa-trash"></i> </button>
       </div>
     </div>
+    <br/>
     <div class="text-nowrap" >
-      <p class="text-right text-primary">{{product.price}}</p>
+      Dostępność: <p class="text-right text-success">{{product.amount}} szt.</p>
+      Cena: <p class="text-right text-primary">{{product.price}} PLN</p>
     </div>
   </div>
 </div>
