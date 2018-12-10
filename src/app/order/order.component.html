@@ -1,0 +1,37 @@
+<section class="jumbotron text-center">
+  <div class="container">
+    <br/>
+    <h1 class="jumbotron-heading">Niezrealizowane zamówienia</h1>
+  </div>
+</section>
+
+<div class="container mb-4">
+  <div class="row">
+    <div class="col-12">
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th scope="col" class="text-center">Nr zamówienia</th>
+            <th scope="col" class="text-center">Dane klienta</th>
+            <th scope="col" class="text-center">Adres</th>
+            <th scope="col" class="text-right">Zamówione produkty</th>
+            <th scope="col" class="text-center">Realizacja</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let order of orders | async">
+            <td align="center">{{order.id}}  </td>
+            <td align="center">{{order.username}}</td>
+            <td align="center">{{order.address}}</td>
+            <td align="center">{{getOrderItemNames(order)}}</td>
+            <td class="text-center">
+              <button id="realizeOrder" class="btn btn-sm btn-success" (click)="realizeOrder(order)"><i class="fa fa-check"></i> </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

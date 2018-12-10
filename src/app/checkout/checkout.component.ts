@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {BasketService} from '../basket.service';
-import {BasketProduct} from '../model/basket';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {CheckoutConfirmComponent} from '../checkout-confirm/checkout-confirm.component';
+import {CheckoutService} from '../checkout.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-checkout',
@@ -9,7 +12,10 @@ import {BasketProduct} from '../model/basket';
 })
 export class CheckoutComponent implements OnInit {
 
-  constructor(private basketService: BasketService) { }
+  constructor(private basketService: BasketService,
+              private checkoutService: CheckoutService,
+              private router: Router,
+              private modalService: NgbModal) { }
 
   ngOnInit() {
   }
@@ -38,4 +44,18 @@ export class CheckoutComponent implements OnInit {
     return this.basketService.getOrderPrice();
   }
 
+  openFormModal() {
+    const modalRef = this.modalService.open(CheckoutConfirmComponent);
+    modalRef.result.then((result) => {
+      this.finishCheckout(result);
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
+
+  finishCheckout(result) {
+    this.checkoutService.makeOrder(result, this.getBasket(), this.getOrderPrice());
+    this.basketService.emptyBasket();
+    this.router.navigate(['/productList']);
+  }
 }

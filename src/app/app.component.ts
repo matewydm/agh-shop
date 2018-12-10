@@ -12,6 +12,6 @@ export class AppComponent {
   constructor(private adminService: AdminService) {}
 
   isAdmin(): boolean {
-    return this.adminService.isAuthorized();
+    return this.adminService.isAuthorized;
   }
 }

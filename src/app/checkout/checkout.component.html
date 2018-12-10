@@ -48,10 +48,10 @@
     <div class="col mb-2">
       <div class="row">
         <div class="col-sm-12  col-md-6">
-          <button class="btn btn-block btn-light">Kontynuuj zakupy</button>
+          <button routerLink="/productList" class="btn btn-block btn-light">Kontynuuj zakupy</button>
         </div>
         <div class="col-sm-12 col-md-6 text-right">
-          <button class="btn btn-lg btn-block btn-success text-uppercase">Potwierdz zamówienie</button>
+          <button (click)="openFormModal()" class="btn btn-lg btn-block btn-success text-uppercase">Potwierdz zamówienie</button>
         </div>
       </div>
     </div>

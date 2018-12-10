@@ -21,6 +21,8 @@ import { environment } from '../environments/environment';
 import { ProductCreatorComponent } from './product-creator/product-creator.component';
 import { AdminComponent } from './admin/admin.component';
 import { AdminLoginComponent } from './admin-login/admin-login.component';
+import { CheckoutConfirmComponent } from './checkout-confirm/checkout-confirm.component';
+import { OrderComponent } from './order/order.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,9 @@ import { AdminLoginComponent } from './admin-login/admin-login.component';
     CheckoutComponent,
     ProductCreatorComponent,
     AdminComponent,
-    AdminLoginComponent
+    AdminLoginComponent,
+    CheckoutConfirmComponent,
+    OrderComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),
@@ -47,6 +51,6 @@ import { AdminLoginComponent } from './admin-login/admin-login.component';
   ],
   providers: [ProductService, NgbActiveModal],
   bootstrap: [AppComponent],
-  entryComponents: [ProductCreatorComponent, AdminLoginComponent]
+  entryComponents: [ProductCreatorComponent, AdminLoginComponent, CheckoutConfirmComponent]
 })
 export class AppModule { }

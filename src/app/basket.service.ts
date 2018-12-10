@@ -18,13 +18,21 @@ export class BasketService {
     }
   }
 
+  emptyBasket() {
+    localStorage.removeItem('basket');
+  }
+
   add(product: Product) {
     const basket = this.getBasket();
     let isStored = false;
     for (const item of basket) {
-      if (item.product.id === product.id && item.amount + 1 > item.product.amount) {
-        item.amount++;
+      if (item.product.id === product.id) {
         isStored = true;
+        if (item.amount + 1 <= item.product.amount) {
+          item.amount++;
+        } else {
+          console.log('Produkt jest już niedostępny');
+        }
       }
     }
     if (!isStored && product.amount >= 1) {
