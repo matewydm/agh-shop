@@ -1,0 +1,12 @@
+.col--noPadding{
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.productList{
+    padding-top: 70px;
+}
+
+.productList_ngSelect{
+    width: 300px;
+}
