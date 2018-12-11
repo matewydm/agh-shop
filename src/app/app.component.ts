@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
-import {AdminService} from './admin.service';
+import {UserService} from './user.service';
+import {AngularFireAuth} from 'angularfire2/auth';
+import {Observable} from 'rxjs';
+import {User} from 'firebase';
 
 @Component({
   selector: 'app-root',
@@ -9,9 +12,4 @@ import {AdminService} from './admin.service';
 export class AppComponent {
   title = 'agh-shop';
 
-  constructor(private adminService: AdminService) {}
-
-  isAdmin(): boolean {
-    return this.adminService.isAuthorized;
-  }
 }

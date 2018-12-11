@@ -4,15 +4,15 @@
     <p class="card-text">{{product.name}}<br/>
       <small class="text-muted">{{product.description}}</small>
     </p>
-    <div class="d-flex justify-content-between align-items-center">
+    <div *ngIf="isRole('CUSTOMER')" class="d-flex justify-content-between align-items-center">
       <div class="btn-group">
-        <button type="button" (click)="addToBasket(product)" class="btn btn-sm btn-outline-secondary">Dodaj do koszyka</button>
+        <button type="button" (click)="addToBasket(product)" class="btn btn-sm btn-outline-primary">Dodaj do koszyka</button>
         <button type="button" (click)="subtractFromBasket(product)" class="btn btn-sm btn-outline-secondary">Usuń z koszyka</button>
       </div>
     </div>
-    <div class="d-flex justify-content-between align-items-center">
+    <div *ngIf="isRole('OPERATOR') || isRole('ADMIN')" class="d-flex justify-content-between align-items-center">
       <div class="btn-group">
-        <button type="button" (click)="addToList(product)" class="btn btn-sm btn-outline-secondary">Dodaj do listy</button>
+        <button type="button" (click)="addToList(product)" class="btn btn-sm btn-outline-primary">Dodaj do listy</button>
         <button type="button" (click)="subtractFromList(product)" class="btn btn-sm btn-outline-secondary">Usuń z listy</button>
         <button id="removeItem" class="btn btn-sm btn-danger" (click)="removeFromList(product)"><i class="fa fa-trash"></i> </button>
       </div>
@@ -21,6 +21,9 @@
     <div class="text-nowrap" >
       Dostępność: <p class="text-right text-success">{{product.amount}} szt.</p>
       Cena: <p class="text-right text-primary">{{product.price}} PLN</p>
+    </div>
+    <div class="col-md-5" *ngIf="isRole('OPERATOR') || isRole('ADMIN')" >
+      <button type="button" (click)="openFormModal(product)" class="btn btn-sm btn-outline-secondary">Edytuj <i class="fa fa-pencil"></i></button>
     </div>
   </div>
 </div>

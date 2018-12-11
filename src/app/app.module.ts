@@ -20,9 +20,11 @@ import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { environment } from '../environments/environment';
 import { ProductCreatorComponent } from './product-creator/product-creator.component';
 import { AdminComponent } from './admin/admin.component';
-import { AdminLoginComponent } from './admin-login/admin-login.component';
+import { UserLoginComponent } from './user-login/user-login.component';
 import { CheckoutConfirmComponent } from './checkout-confirm/checkout-confirm.component';
 import { OrderComponent } from './order/order.component';
+import { UserService } from './user.service';
+import { RegistrationComponent } from './registration/registration.component';
 
 @NgModule({
   declarations: [
@@ -34,9 +36,10 @@ import { OrderComponent } from './order/order.component';
     CheckoutComponent,
     ProductCreatorComponent,
     AdminComponent,
-    AdminLoginComponent,
+    UserLoginComponent,
     CheckoutConfirmComponent,
-    OrderComponent
+    OrderComponent,
+    RegistrationComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),
@@ -49,8 +52,8 @@ import { OrderComponent } from './order/order.component';
     NgSelectModule,
     AppRoutingModule
   ],
-  providers: [ProductService, NgbActiveModal],
+  providers: [ProductService, UserService, NgbActiveModal],
   bootstrap: [AppComponent],
-  entryComponents: [ProductCreatorComponent, AdminLoginComponent, CheckoutConfirmComponent]
+  entryComponents: [ProductCreatorComponent, UserLoginComponent, CheckoutConfirmComponent]
 })
 export class AppModule { }

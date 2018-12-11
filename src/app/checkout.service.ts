@@ -11,7 +11,7 @@ export class CheckoutService {
   constructor(private db: AngularFirestore) { }
 
   makeOrder(result: any, basket: BasketProduct[], price: number) {
-    const order = new Order(basket, result.username, result.address, price);
+    const order = new Order(basket, result.id, result.email, result.username, result.address, price);
     this.updateOrder(order);
   }
 

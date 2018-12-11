@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {BasketService} from '../basket.service';
 import {ProductCreatorComponent} from '../product-creator/product-creator.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {AdminLoginComponent} from '../admin-login/admin-login.component';
+import {UserLoginComponent} from '../user-login/user-login.component';
+import {UserService} from '../user.service';
 
 @Component({
   selector: 'app-navbar',
@@ -12,6 +13,7 @@ import {AdminLoginComponent} from '../admin-login/admin-login.component';
 export class NavbarComponent implements OnInit {
 
   constructor(private basketService: BasketService,
+              private userService: UserService,
               private modalService: NgbModal) { }
 
   ngOnInit() {
@@ -26,12 +28,24 @@ export class NavbarComponent implements OnInit {
     return amount;
   }
 
-  openFormModal() {
-    const modalRef = this.modalService.open(AdminLoginComponent);
+  openLoginModal() {
+    const modalRef = this.modalService.open(UserLoginComponent);
     modalRef.result.then((result) => {
       console.log(result);
     }).catch((error) => {
       console.log(error);
     });
+  }
+
+  private isRole(role: string) {
+    return this.userService.isRole(role);
+  }
+
+  private isSignedIn() {
+    return this.userService.isSignedIn();
+  }
+
+  private signOut() {
+    return this.userService.signOut();
   }
 }

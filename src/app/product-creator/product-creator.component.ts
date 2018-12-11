@@ -10,15 +10,10 @@ import {ProductService} from '../product.service';
 })
 export class ProductCreatorComponent implements OnInit {
 
-  id: string;
-  name: string;
-  link: string;
-  price: number;
-  category: string;
-  description: string;
-  amount: number;
+  product: Product = new Product();
 
-  constructor(public activeModal: NgbActiveModal, private productService: ProductService) { }
+  constructor(public activeModal: NgbActiveModal,
+              private productService: ProductService) { }
 
   closeModal() {
     this.activeModal.close('Modal Closed');
@@ -28,7 +23,7 @@ export class ProductCreatorComponent implements OnInit {
   }
 
   createProduct() {
-    this.productService.addProduct(new Product(this.id, this.name, this.link, this.price, this.category, this.description, this.amount));
+    this.productService.addProduct(this.product);
     this.activeModal.close();
   }
 }

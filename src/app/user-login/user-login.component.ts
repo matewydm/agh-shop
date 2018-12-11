@@ -1,19 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {AdminService} from '../admin.service';
+import {UserService} from '../user.service';
 
 @Component({
   selector: 'app-admin-login',
-  templateUrl: './admin-login.component.html',
-  styleUrls: ['./admin-login.component.css']
+  templateUrl: './user-login.component.html',
+  styleUrls: ['./user-login.component.css']
 })
-export class AdminLoginComponent implements OnInit {
+export class UserLoginComponent implements OnInit {
 
   email: string;
   password: string;
 
   constructor(public activeModal: NgbActiveModal,
-              private adminService: AdminService) { }
+              private adminService: UserService) { }
 
   ngOnInit() {
   }
@@ -22,8 +22,8 @@ export class AdminLoginComponent implements OnInit {
     this.activeModal.close('Modal Closed');
   }
 
-  logIn() {
-    this.adminService.logIn(this.email, this.password);
+  signIn() {
+    this.adminService.signIn(this.email, this.password);
     this.activeModal.close();
   }
 

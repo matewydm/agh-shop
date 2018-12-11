@@ -45,7 +45,7 @@ export class ProductService implements OnInit {
     if (filter.selectedCategories.some(e => e.selected) ) {
       console.log(filter.selectedCategories);
       filter.selectedCategories.filter(e => e.selected).forEach(e => {
-        query = query.where('category', 'array-contains', e.category);
+        query = query.where('category', '==', e.category);
       });
     }
     query = query.startAt(filter.startIndex.toString());
@@ -61,7 +61,7 @@ export class ProductService implements OnInit {
     if (filter.selectedCategories.some(e => e.selected) ) {
       console.log(filter.selectedCategories);
       filter.selectedCategories.filter(e => e.selected).forEach(e => {
-        query = query.where('category', 'array-contains', e.category);
+        query = query.where('category', '==', e.category);
       });
     }
     return query;

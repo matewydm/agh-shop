@@ -1,7 +1,6 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {ProductService} from '../product.service';
+import {Component, OnInit} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {Product} from '../model/product';
+import {UserData} from '../model/userData';
 
 @Component({
   selector: 'app-checkout-confirm',
@@ -10,8 +9,7 @@ import {Product} from '../model/product';
 })
 export class CheckoutConfirmComponent implements OnInit {
 
-  username: string;
-  address: string;
+  userData: UserData = new UserData();
 
   constructor(public activeModal: NgbActiveModal) { }
 
@@ -24,8 +22,10 @@ export class CheckoutConfirmComponent implements OnInit {
 
   checkout() {
     this.activeModal.close({
-      username: this.username,
-      address: this.address
+      id: this.userData.id,
+      email: this.userData.email,
+      username: this.userData.username,
+      address: this.userData.address
     });
   }
 }

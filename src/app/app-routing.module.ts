@@ -4,8 +4,10 @@ import { ProductListComponent } from './product-list/product-list.component';
 import {CheckoutComponent} from './checkout/checkout.component';
 import {AdminComponent} from './admin/admin.component';
 import {OrderComponent} from './order/order.component';
+import {RegistrationComponent} from './registration/registration.component';
 
 const routes: Routes = [
+  { path: 'registration', component: RegistrationComponent},
   { path: 'productList', component: ProductListComponent },
   { path: 'adminPanel', component: AdminComponent },
   { path: 'checkout', component: CheckoutComponent },

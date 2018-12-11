@@ -4,6 +4,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {CheckoutConfirmComponent} from '../checkout-confirm/checkout-confirm.component';
 import {CheckoutService} from '../checkout.service';
 import {Router} from '@angular/router';
+import {UserService} from '../user.service';
 
 @Component({
   selector: 'app-checkout',
@@ -14,6 +15,7 @@ export class CheckoutComponent implements OnInit {
 
   constructor(private basketService: BasketService,
               private checkoutService: CheckoutService,
+              private userService: UserService,
               private router: Router,
               private modalService: NgbModal) { }
 
@@ -46,6 +48,7 @@ export class CheckoutComponent implements OnInit {
 
   openFormModal() {
     const modalRef = this.modalService.open(CheckoutConfirmComponent);
+    modalRef.componentInstance.userData = this.userService.getSignedInUserData();
     modalRef.result.then((result) => {
       this.finishCheckout(result);
     }).catch((error) => {

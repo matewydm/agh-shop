@@ -1,6 +1,6 @@
 <div class="modal-header">
-  <h4 class="modal-title" id="modal-basic-title">Dodawanie nowego produktu</h4>
-  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+  <h4 class="modal-title" id="modal-basic-title">Potwierdzenie zamówienia</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('')">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
@@ -10,15 +10,37 @@
     <form class="form-horizontal" role="form">
       <div class="row">
         <div class="col-md-3 field-label-responsive">
+          <label for="email">Email</label>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+              <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-at"></i></div>
+              <input type="email" name="email" class="form-control" id="email"
+                     [required]="true"
+                     [(ngModel)]="userData.email" [ngModelOptions]="{standalone: true}">
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-control-feedback">
+                        <span class="text-danger align-middle">
+                          Dare
+                        </span>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3 field-label-responsive">
           <label for="username">Imię i nazwisko</label>
         </div>
         <div class="col-md-6">
           <div class="form-group">
             <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-              <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-fingerprint"></i></div>
+              <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-font"></i></div>
               <input type="text" name="username" class="form-control" id="username"
-                      [required]="true"
-                      [(ngModel)]="username" [ngModelOptions]="{standalone: true}">
+                     [required]="true"
+                     [(ngModel)]="userData.username" [ngModelOptions]="{standalone: true}">
             </div>
           </div>
         </div>
@@ -37,10 +59,10 @@
         <div class="col-md-6">
           <div class="form-group">
             <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-              <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-font"></i></div>
+              <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-address-card"></i></div>
               <input type="text" name="name" class="form-control" id="address"
                      required autofocus
-                     [(ngModel)]="address" [ngModelOptions]="{standalone: true}">
+                     [(ngModel)]="userData.address" [ngModelOptions]="{standalone: true}">
             </div>
           </div>
         </div>
