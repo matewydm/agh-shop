@@ -25,6 +25,8 @@ import { CheckoutConfirmComponent } from './checkout-confirm/checkout-confirm.co
 import { OrderComponent } from './order/order.component';
 import { UserService } from './user.service';
 import { RegistrationComponent } from './registration/registration.component';
+import { ItemListComponent } from './item-list/item-list.component';
+import { PromotionComponent } from './promotion/promotion.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +41,9 @@ import { RegistrationComponent } from './registration/registration.component';
     UserLoginComponent,
     CheckoutConfirmComponent,
     OrderComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    ItemListComponent,
+    PromotionComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),
@@ -54,6 +58,11 @@ import { RegistrationComponent } from './registration/registration.component';
   ],
   providers: [ProductService, UserService, NgbActiveModal],
   bootstrap: [AppComponent],
-  entryComponents: [ProductCreatorComponent, UserLoginComponent, CheckoutConfirmComponent]
+  entryComponents: [
+    ProductCreatorComponent,
+    UserLoginComponent,
+    CheckoutConfirmComponent,
+    ItemListComponent,
+    PromotionComponent]
 })
 export class AppModule { }

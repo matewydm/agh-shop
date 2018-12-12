@@ -10,17 +10,18 @@ import {Product} from './model/product';
 export class ProductService implements OnInit {
 
   constructor(private db: AngularFirestore) { }
+  productMap = new Map();
 
   ngOnInit() {
   }
 
-  getProducts(filter: ProductFilter): Observable<any[]> {
-    const db = this.db.collection('/product', ref => this.applyFilters(ref, filter));
-    return db.valueChanges();
+  async getProduct(id: string) {
+    return await this.db.collection('/product').doc(id).ref.get().then();
   }
 
-  getProduct(id: string): Observable<any> {
-    return this.db.collection('/product').doc(id).valueChanges();
+   getProducts(filter: ProductFilter): Observable<any[]> {
+    const db = this.db.collection('/product', ref => this.applyFilters(ref, filter));
+    return db.valueChanges();
   }
 
   getProductsCount(filter: ProductFilter): Observable<any> {

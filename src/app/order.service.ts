@@ -5,6 +5,7 @@ import {OrderFilter} from './model/orderFilter';
 import {Order} from './model/order';
 import {OrderProduct} from './model/orderProduct';
 import {ProductService} from './product.service';
+import {Product} from './model/product';
 
 @Injectable({
   providedIn: 'root'
@@ -19,33 +20,95 @@ export class OrderService {
     return db.valueChanges();
   }
 
-  realizeOrder(order: Order) {
-    order.items.forEach(item => this.realizeItem(item));
-    order.status = 'REALISED';
-    this.updateOrder(order);
-  }
-
-  realizeSingleOrder(item: OrderProduct, order: Order) {
-    this.realizeItem(item);
+  async realizeOrder(order: Order) {
     order.status = 'IN_PROGRESS';
-    const isRealised = order.items.filter(e => !e.isRealised).length === 0;
-    if (isRealised) {
-      order.status = 'REALISED';
-    }
     this.updateOrder(order);
+    console.log('Przyjęto do realizacji.');
+    let isError = false;
+    await this.realizeItems(order.items)
+      .then(() => {
+        console.log('Nie wykryto błędów, realizowanie zamówienia.');
+        order.status = 'REALISED';
+        this.updateOrder(order);
+      })
+      .catch(e => {
+        console.log('Wykryto błąd');
+        isError = true;
+      });
+    if (isError) {
+      throw new Error('Zamówienie nie zostało zrealizowane');
+    }
   }
 
-  realizeItem(item: OrderProduct) {
+  async realizePartialOrder(order: Order, items: OrderProduct[]) {
+    order.status = 'IN_PROGRESS';
+    this.updateOrder(order);
+    console.log('Przyjęto do realizacji.');
+    let isError = false;
+    order.items = items;
+    const realisedItems = order.items.filter(item => item.isRealised);
+    console.log(realisedItems);
+    await this.realizeItems(realisedItems)
+      .then(() => {
+        console.log('Nie wykryto błędów, realizowanie częsciowe zamówienia.');
+        this.updateOrder(order);
+      })
+      .catch(e => {
+        console.log('Wykryto błąd');
+        isError = true;
+      });
+    if (isError) {
+      throw new Error('Zamówienie nie zostało zrealizowane');
+    }
+  }
+
+  async realizeSingleItems(order: Order, items: OrderProduct[]) {
+    let isError = false;
+    const isAnyNotRealised = items.filter(item => item.isRealised === false).length > 0;
+    if (!isAnyNotRealised) {
+      await this.realizeOrder(order).catch(e => {
+        isError = true;
+      });
+    } else {
+      await this.realizePartialOrder(order, items).catch(e => {
+        isError = true;
+      });
+    }
+    if (isError) {
+      throw new Error('Częściowe zamówienie nie zostało zrealizowane');
+    }
+  }
+
+  async realizeItems(items): Promise<boolean> {
+    let isError = false;
+    await Promise.all(items.forEach(async item => {
+      await this.realizeItem(item).catch(() => {
+        isError = true;
+      });
+    }));
+    return isError;
+  }
+
+  async realizeItem(item: OrderProduct) {
     const orderedAmount = item.orderItem.amount;
-    this.productService.getProduct(item.orderItem.product.id).subscribe(p => {
-      if (p.amount < orderedAmount) {
-        throw new Error('Niedare');
-      } else {
-        p.amount -= orderedAmount;
-        this.productService.addProduct(p);
+    let isError = false;
+    await this.productService.getProduct(item.orderItem.product.id).then(p => {
+      if (p.exists) {
+        const product = p.data() as Product;
+        if (product.amount < orderedAmount) {
+          console.log('Produkt niedostępny...');
+          isError = true;
+        } else {
+          console.log('Produkt dostępny - aktualizacja');
+          product.amount -= orderedAmount;
+          this.productService.addProduct(product);
+          item.isRealised = true;
+        }
       }
     });
-    item.isRealised = true;
+    if (isError) {
+      throw new Error('Produktu brakuje na stanie');
+    }
   }
 
   applyFilters(ref: CollectionReference, filter: OrderFilter): Query {
@@ -60,7 +123,7 @@ export class OrderService {
   updateOrder(order: Order) {
     this.db.collection('/order').doc(order.id).set(Object.assign({}, order))
       .then(function() {
-        console.log('Product successfully added:', order);
+        console.log('Zamówienie pomyślnie zaktualizowane:', order);
       });
   }
 }

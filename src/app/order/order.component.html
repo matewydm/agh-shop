@@ -22,16 +22,16 @@
             <th scope="col" class="text-center">Dane klienta</th>
             <th scope="col" class="text-center">Adres</th>
             <th scope="col" class="text-right">Zamówione produkty</th>
-            <th scope="col" class="text-center">Realizacja</th>
+            <th scope="col" class="text-center" *ngIf="!isRealised()" >Realizacja</th>
           </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let order of orders | async">
+          <tr *ngFor="let order of orders | async" (click)="openSingleItemModal(order)">
             <td align="center">{{order.id}}  </td>
             <td align="center">{{order.username}}</td>
             <td align="center">{{order.address}}</td>
             <td align="center">{{getOrderItemNames(order)}}</td>
-            <td class="text-center">
+            <td class="text-center" *ngIf="!isRealised()">
               <button id="realizeOrder" class="btn btn-sm btn-success" (click)="realizeOrder(order)"><i class="fa fa-check"></i> </button>
             </td>
           </tr>

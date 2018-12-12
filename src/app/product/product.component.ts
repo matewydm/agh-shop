@@ -4,6 +4,7 @@ import {BasketService} from '../basket.service';
 import {UserService} from '../user.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ProductCreatorComponent} from '../product-creator/product-creator.component';
+import {PromotionComponent} from '../promotion/promotion.component';
 
 @Component({
   selector: 'app-product',
@@ -46,6 +47,16 @@ export class ProductComponent implements OnInit {
 
   openFormModal(product) {
     const modalRef = this.modalService.open(ProductCreatorComponent);
+    modalRef.componentInstance.product = product;
+    modalRef.result.then((result) => {
+      console.log(result);
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
+
+  openFormPromotionModal(product) {
+    const modalRef = this.modalService.open(PromotionComponent);
     modalRef.componentInstance.product = product;
     modalRef.result.then((result) => {
       console.log(result);
