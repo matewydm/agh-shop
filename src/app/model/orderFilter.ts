@@ -1,8 +1,8 @@
 export class OrderFilter {
-  isRealised: boolean;
+  status: string;
   limit: number;
-  constructor(isRealised: boolean, limit: number) {
-    this.isRealised = isRealised;
+  constructor(status: string, limit: number) {
+    this.status = status;
     this.limit = limit;
   }
 }

@@ -1,15 +1,15 @@
-import {BasketProduct} from './basket';
+import {OrderProduct} from './orderProduct';
 
 export class Order {
   id: string;
-  items: BasketProduct[];
+  items: OrderProduct[];
   userId: string;
   email: string;
   username: string;
   address: string;
   price: number;
-  isRealised: boolean;
-  constructor(items: BasketProduct[],
+  status: string;
+  constructor(items: OrderProduct[],
               userId: string,
               email: string,
               username: string,
@@ -22,7 +22,7 @@ export class Order {
     this.username = username;
     this.address = address;
     this.price = price;
-    this.isRealised = false;
+    this.status = 'NOT_REALISED';
   }
 }
 

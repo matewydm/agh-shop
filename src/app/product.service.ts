@@ -19,6 +19,10 @@ export class ProductService implements OnInit {
     return db.valueChanges();
   }
 
+  getProduct(id: string): Observable<any> {
+    return this.db.collection('/product').doc(id).valueChanges();
+  }
+
   getProductsCount(filter: ProductFilter): Observable<any> {
     return this.db.collection('/product', ref => this.applyCountFilters(ref, filter)).get();
   }

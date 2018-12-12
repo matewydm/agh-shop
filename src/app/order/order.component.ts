@@ -12,17 +12,22 @@ import {OrderFilter} from '../model/orderFilter';
 export class OrderComponent implements OnInit {
 
   orders: Observable<Order[]>;
+  status = 'NOT_REALISED';
 
   constructor(private orderService: OrderService, ) { }
 
   ngOnInit() {
-    const filter = new OrderFilter(false, null);
+    const filter = new OrderFilter(this.status, null);
     this.orders = this.orderService.getOrders(filter);
     this.orders.subscribe(o => console.log(o));
   }
 
   getOrderItemNames(order: Order): string {
-    return order.items.map(e => e.product.name).join(', ');
+    return order.items.map(e => e.orderItem.product.name).join(', ');
+  }
+
+  filterStatus(status: string): string {
+    return this.status = status;
   }
 
   realizeOrder(order) {

@@ -8,3 +8,13 @@
     transform: translateX(-50%);
     position: relative;
 }
+
+.pagination-dare{
+  padding-top: 130px;
+}
+
+.center{
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%)
+}

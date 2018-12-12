@@ -1,9 +1,15 @@
-<section class="jumbotron text-center">
+<section class="jumbotron text-center pagination-dare">
   <div class="container">
     <br/>
-    <h1 class="jumbotron-heading">Niezrealizowane zamówienia</h1>
+    <h1 class="jumbotron-heading">Zamówienia</h1>
   </div>
 </section>
+
+<div class="btn-group mb-4 center" role="group" aria-label="Basic example">
+  <button type="button" (click)="filterStatus('NOT_REALISED')" class="btn btn-secondary">Niezrealizowane</button>
+  <button type="button" (click)="filterStatus('IN_PROGRESS')" class="btn btn-warning">W trakcie realizacji</button>
+  <button type="button" (click)="filterStatus('REALISED')" class="btn btn-success">Zrealizowane</button>
+</div>
 
 <div class="container mb-4">
   <div class="row">
