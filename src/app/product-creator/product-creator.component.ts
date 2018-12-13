@@ -15,10 +15,6 @@ export class ProductCreatorComponent implements OnInit {
   constructor(public activeModal: NgbActiveModal,
               private productService: ProductService) { }
 
-  closeModal() {
-    this.activeModal.close('Modal Closed');
-  }
-
   ngOnInit() {
   }
 

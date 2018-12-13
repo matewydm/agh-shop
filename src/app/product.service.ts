@@ -29,6 +29,9 @@ export class ProductService implements OnInit {
   }
 
   addProduct(product: Product) {
+    if (product.promotion) {
+      product.promotion = Object.assign({}, product.promotion);
+    }
     this.db.collection('/product').doc(product.id).set(Object.assign({}, product))
       .then(function() {
         console.log('Product successfully added:', product);
