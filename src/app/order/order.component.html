@@ -11,7 +11,7 @@
   <button type="button" (click)="filterStatus('REALISED')" class="btn btn-success">Zrealizowane</button>
 </div>
 
-<div class="container mb-4">
+<div class="container mb-4" *ngIf="isRole('ADMIN') || isRole('OPERATOR')">
   <div class="row">
     <div class="col-12">
       <div class="table-responsive">
