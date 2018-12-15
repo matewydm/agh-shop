@@ -7,135 +7,176 @@
 <div class="modal-body">
 
   <div class="container">
-    <form class="form-horizontal" role="form">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-horizontal" role="form">
       <div class="row">
         <div class="col-md-3 field-label-responsive">
-          <label for="name">Identyfikator</label>
+          <label for="id">Identyfikator</label>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-5">
           <div class="form-group">
             <div class="input-group mb-2 mr-sm-2 mb-sm-0">
               <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-fingerprint"></i></div>
-              <input type="text" name="name" class="form-control" id="name"
-                     placeholder="ID" [required]="true"
-                     [(ngModel)]="product.id" [ngModelOptions]="{standalone: true}">
+              <input type="text" name="name"  class="form-control" id="id"
+                     placeholder="ID" [(ngModel)]="product.id"
+                     formControlName="id" [ngClass]="{ 'is-invalid': submitted && c.id.errors }">
             </div>
           </div>
         </div>
-        <div class="col-md-3">
+        <div *ngIf="submitted && c.id.errors" class="col-md-4">
           <div class="form-control-feedback">
-                        <span class="text-danger align-middle">
-                            <!-- Put name validation error messages here -->
+                        <span class="text-danger align-right">
+                            Niepoprawny ID
                         </span>
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col-md-3 field-label-responsive">
-          <label for="email">Nazwa</label>
+          <label for="name">Nazwa</label>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-5">
           <div class="form-group">
             <div class="input-group mb-2 mr-sm-2 mb-sm-0">
               <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-font"></i></div>
-              <input type="text" name="name" class="form-control" id="email"
-                     placeholder="Nazwa produktu" required autofocus
-                     [(ngModel)]="product.name" [ngModelOptions]="{standalone: true}">
+              <input type="text" name="name" class="form-control" id="name"
+                     placeholder="Nazwa produktu"  formControlName="name" required autofocus
+                     [(ngModel)]="product.name"
+                     [ngClass]="{ 'is-invalid': submitted && c.name.errors }">
             </div>
           </div>
         </div>
-        <div class="col-md-3">
+        <div *ngIf="submitted && c.name.errors" class="col-md-4">
           <div class="form-control-feedback">
                         <span class="text-danger align-middle">
-                            <!-- Put e-mail validation error messages here -->
+                            Niepoprawna nazwa
                         </span>
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col-md-3 field-label-responsive">
-          <label for="password">Opis</label>
+          <label for="desc">Opis</label>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-5">
           <div class="form-group has-danger">
             <div class="input-group mb-2 mr-sm-2 mb-sm-0">
               <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-align-left"></i></div>
-              <input type="text" name="password" class="form-control" id="password"
+              <input type="text" name="desc" formControlName="description" class="form-control" id="desc"
                      placeholder="..." required
-                     [(ngModel)]="product.description" [ngModelOptions]="{standalone: true}">
+                     [(ngModel)]="product.description"
+                     [ngClass]="{ 'is-invalid': submitted && c.description.errors }">
             </div>
+          </div>
+        </div>
+        <div *ngIf="submitted && c.description.errors" class="col-md-4">
+          <div class="form-control-feedback">
+                        <span class="text-danger align-middle">
+                            Brak opisu
+                        </span>
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col-md-3 field-label-responsive">
-          <label for="password">Kategoria</label>
+          <label for="category">Kategoria</label>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-5">
           <div class="form-group has-danger">
             <div class="input-group mb-2 mr-sm-2 mb-sm-0">
               <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-filter"></i></div>
-              <input type="text" name="category" class="form-control" id="category"
+              <input type="text" name="category" formControlName="category" class="form-control" id="category"
                      placeholder="..." required="required"
-                     [(ngModel)]="product.category" [ngModelOptions]="{standalone: true}">
+                     [(ngModel)]="product.category"
+                     [ngClass]="{ 'is-invalid': submitted && c.category.errors }">
             </div>
+          </div>
+        </div>
+        <div *ngIf="submitted && c.category.errors" class="col-md-4">
+          <div class="form-control-feedback">
+                        <span class="text-danger align-middle">
+                            Niepoprawna kategoria
+                        </span>
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col-md-3 field-label-responsive">
-          <label for="password">Zdjęcie</label>
+          <label for="link">Zdjęcie</label>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-5">
           <div class="form-group">
             <div class="input-group mb-2 mr-sm-2 mb-sm-0">
               <div class="input-group-addon" style="width: 2.6rem">
                 <i class="fa fa-image"></i>
               </div>
-              <input type="text" name="password-confirmation" class="form-control"
-                     id="password-confirm" placeholder="Link..." required
-                     [(ngModel)]="product.link" [ngModelOptions]="{standalone: true}">
+              <input type="text" name="password-confirmation" formControlName="link"  class="form-control"
+                     id="link" placeholder="Link..."
+                     [(ngModel)]="product.link"
+                     [ngClass]="{ 'is-invalid': submitted && c.link.errors }">
             </div>
+          </div>
+        </div>
+        <div *ngIf="submitted && c.link.errors" class="col-md-4">
+          <div class="form-control-feedback">
+                        <span class="text-danger align-middle">
+                            Brak linku
+                        </span>
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col-md-3 field-label-responsive">
-          <label for="password">Cena</label>
+          <label for="price">Cena</label>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-5">
           <div class="form-group">
             <div class="input-group mb-2 mr-sm-2 mb-sm-0">
               <div class="input-group-addon" style="width: 2.6rem">
                 <i class="fa fa-money"></i>
               </div>
               <input type="number" name="price-enter" class="form-control"
-                     id="price-input" required
-                     [(ngModel)]="product.price" [ngModelOptions]="{standalone: true}">
+                     id="price" required formControlName="price"
+                     [(ngModel)]="product.price"
+                     [ngClass]="{ 'is-invalid': submitted && c.price.errors }">
             </div>
+          </div>
+        </div>
+        <div *ngIf="submitted && c.price.errors" class="col-md-4">
+          <div class="form-control-feedback">
+                        <span class="text-danger align-middle">
+                            Niepoprawna cena
+                        </span>
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col-md-3 field-label-responsive">
-          <label for="password">Dostępność</label>
+          <label for="amount">Dostępność</label>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-5">
           <div class="form-group">
             <div class="input-group mb-2 mr-sm-2 mb-sm-0">
               <div class="input-group-addon" style="width: 2.6rem">
                 <i class="fa fa-archive"></i>
               </div>
               <input type="number" name="price-enter" class="form-control"
-                     id="amount-input" required
-                     [(ngModel)]="product.amount" [ngModelOptions]="{standalone: true}">
+                     id="amount" formControlName="amount"
+                     [(ngModel)]="product.amount"
+                     [ngClass]="{ 'is-invalid': submitted && c.amount.errors }">
             </div>
+          </div>
+        </div>
+        <div *ngIf="submitted && c.amount.errors" class="col-md-4">
+          <div class="form-control-feedback">
+                        <span class="text-danger align-middle">
+                            Niepoprawna dostępność
+                        </span>
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col-md-3"></div>
-        <div class="col-md-6">
+        <div class="col-md-5">
           <button (click)="createProduct()" type="submit" class="btn btn-success"><i class="fa fa-plus"></i> Dodaj produkt</button>
         </div>
       </div>

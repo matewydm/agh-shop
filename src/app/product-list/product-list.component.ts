@@ -1,8 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ProductService} from '../product.service';
 import {Product} from '../model/product';
-import {CategorySelect} from '../model/categorySelect';
-import {Observable} from 'rxjs';
 import {ProductFilter} from '../model/productFilter';
 import {PagerService} from '../pager.service';
 
@@ -19,10 +17,11 @@ export class ProductListComponent implements OnInit {
 
   searchText: string;
   filter: ProductFilter;
-  selectedCategories: CategorySelect[] = [];
-  filteredProductList: Observable<Product[]>;
+  categories: String[] = [];
+  selectedCategories: String[] = [];
+  filteredProductList: Product[];
 
-  pageSizes: number[] = [3, 5, 8];
+  pageSizes: number[] = [3, 6, 9];
   allSize: number;
   pageSize: number;
   pager: any = {};
@@ -30,15 +29,18 @@ export class ProductListComponent implements OnInit {
   ngOnInit() {
     this.pageSize = this.pageSizes[0];
     this.allSize = 6;
-    this.selectedCategories.push(new CategorySelect('Odzież', false));
-    this.selectedCategories.push(new CategorySelect('Gadget', false));
-    this.filter = new ProductFilter(this.searchText, this.selectedCategories, 1, this.pageSize);
-    this.productService.getProductsCount(this.filter).subscribe(e => {
-      this.allSize = e.size;
-      console.log(this.allSize);
-    });
-    this.filteredProductList = this.productService.getProducts(this.filter);
+    this.categories.push('Odzież');
+    this.categories.push('Gadget');
+    this.filter = new ProductFilter(this.searchText, [], this.pageSize, 1, this.pageSize);
+    this.getProducts();
     this.setPage(1);
+  }
+
+  getProducts() {
+    this.productService.getProducts(this.filter).subscribe(e => {
+      this.filteredProductList = this.additionalFiltering(e);
+      this.allSize = e.length;
+    });
   }
 
   removeEventListener(product) {
@@ -59,8 +61,7 @@ export class ProductListComponent implements OnInit {
 
   filterProductList() {
     this.updateFilters(this.filter.startIndex, this.filter.endIndex);
-    this.filteredProductList = this.productService.getProducts(this.filter);
-    this.productService.getProductsCount(this.filter).subscribe(e => this.allSize = e.size);
+    this.getProducts();
   }
 
   refreshPage() {
@@ -75,13 +76,23 @@ export class ProductListComponent implements OnInit {
     this.pager = this.pagerService.getPager(this.allSize, page, this.pageSize);
     console.log(this.pager);
     this.updateFilters(this.pager.startIndex, this.pager.endIndex);
-    this.filteredProductList = this.productService.getProducts(this.filter);
+    this.getProducts();
   }
 
   updateFilters(startIndex: number, endIndex: number) {
     this.filter.name = this.searchText;
-    this.filter.selectedCategories = this.selectedCategories;
+    this.filter.categories = this.selectedCategories;
     this.filter.startIndex = startIndex;
     this.filter.endIndex = endIndex;
+  }
+
+  private additionalFiltering(products: Product[]) {
+    if (this.selectedCategories.length > 0) {
+      products = products.filter(p =>
+        this.selectedCategories.indexOf(p.category) > -1
+      );
+    }
+    products = products.slice(this.filter.startIndex, this.filter.endIndex + 1);
+    return products;
   }
 }

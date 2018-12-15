@@ -11,11 +11,14 @@ export class UserLoginComponent implements OnInit {
 
   email: string;
   password: string;
+  submitted = false;
+  isLoggedIn = false;
 
   constructor(public activeModal: NgbActiveModal,
               private adminService: UserService) { }
 
   ngOnInit() {
+    return this.isLoggedIn = this.adminService.isSignedIn();
   }
 
   closeModal() {
@@ -24,7 +27,10 @@ export class UserLoginComponent implements OnInit {
 
   signIn() {
     this.adminService.signIn(this.email, this.password);
-    this.activeModal.close();
+    // if (this.isLoggedIn) {
+      this.activeModal.close();
+    // }
+    this.submitted = true;
   }
 
 }

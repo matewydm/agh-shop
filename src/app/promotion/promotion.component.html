@@ -7,7 +7,7 @@
 <div class="modal-body">
 
   <div class="container">
-    <form class="form-horizontal" role="form">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-horizontal" role="form" >
       <div class="row">
         <div class="col-md-3 field-label-responsive">
           <label for="id">Identyfikator</label>
@@ -18,13 +18,6 @@
               <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-fingerprint"></i></div>
               <output class="form-control" id="id">{{product.id}}</output>
             </div>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="form-control-feedback">
-                        <span class="text-danger align-middle">
-                            <!-- Put name validation error messages here -->
-                        </span>
           </div>
         </div>
       </div>
@@ -40,13 +33,6 @@
             </div>
           </div>
         </div>
-        <div class="col-md-3">
-          <div class="form-control-feedback">
-                        <span class="text-danger align-middle">
-                            <!-- Put e-mail validation error messages here -->
-                        </span>
-          </div>
-        </div>
       </div>
       <div class="row">
         <div class="col-md-3 field-label-responsive">
@@ -57,8 +43,16 @@
             <div class="input-group mb-2 mr-sm-2 mb-sm-0">
               <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-percent"></i></div>
               <input type="number" class="form-control" id="percentage"
-                     [(ngModel)]="product.promotion.percentage" [ngModelOptions]="{standalone: true}"/>
+                     [(ngModel)]="product.promotion.percentage"
+                     formControlName="percentage" [ngClass]="{ 'is-invalid': submitted && c.percentage.errors }"/>
             </div>
+          </div>
+        </div>
+        <div *ngIf="submitted && c.percentage.errors" class="col-md-3">
+          <div class="form-control-feedback">
+                        <span class="text-danger align-right">
+                            Niepoprawny %
+                        </span>
           </div>
         </div>
       </div>
@@ -69,24 +63,30 @@
         <div class="col-md-8">
           <div class="form-group has-danger">
             <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-              <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-calendar"></i></div>
-              <input type="text" placeholder="yyyy-mm-dd HH:MM" id="expirationDate" ngbDatepicker #d="ngbDatepicker"
-                     [(ngModel)]="product.promotion.expirationDate" [ngModelOptions]="{standalone: true}"/>
-              <div class="input-group-append">
-                <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"><i class="fa fa-calendar"></i></button>
-              </div>
-              <
-              <!--<input type="text" ngbDatepicker #d="ngbDatepicker"/>-->
-              <!--<ngb-datepicker class="form-control" id="expirationDate" required="required"-->
-                          <!--[(ngModel)]="product.promotion.expirationDate" [ngModelOptions]="{standalone: true}"></ngb-datepicker>-->
+              <dl-date-time-picker
+                id="expirationDate"
+                startView="day"
+                maxView="year"
+                minView="minute"
+                minuteStep="2"
+                [(ngModel)]="product.promotion.expirationDate"
+                formControlName="expirationDate" [ngClass]="{ 'is-invalid': submitted && c.expirationDate.errors }">
+              </dl-date-time-picker>
             </div>
+          </div>
+        </div>
+        <div *ngIf="submitted && c.expirationDate.errors" class="col-md-3">
+          <div class="form-control-feedback">
+                        <span class="text-danger align-right">
+                            Nieprawidłowa data
+                        </span>
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col-md-3"></div>
         <div class="col-md-6">
-          <button (click)="addPromotion()" type="submit" class="btn btn-success"><i class="fa fa-gift"></i> Dodaj promocję</button>
+          <button (submit)="addPromotion()" type="submit" class="btn btn-success"><i class="fa fa-gift"></i> Dodaj promocję</button>
         </div>
       </div>
     </form>

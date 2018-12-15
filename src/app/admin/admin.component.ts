@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ProductCreatorComponent} from '../product-creator/product-creator.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {UserService} from '../user.service';
 
 @Component({
   selector: 'app-admin',
@@ -9,9 +10,14 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 })
 export class AdminComponent implements OnInit {
 
-  constructor(private modalService: NgbModal) { }
+  constructor(private modalService: NgbModal,
+              private userService: UserService) { }
 
   ngOnInit() {
+  }
+
+  private isRole(role: string) {
+    return this.userService.isRole(role);
   }
 
   openFormModal() {

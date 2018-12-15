@@ -68,6 +68,14 @@ export class ProductComponent implements OnInit {
     });
   }
 
+  countPromotionPrice() {
+    return this.productService.countPromotionPrice(this.product);
+  }
+
+  isPromotionActive() {
+    return this.productService.isPromotionActive(this.product);
+  }
+
   private isRole(role: string) {
     return this.userService.isRole(role);
   }

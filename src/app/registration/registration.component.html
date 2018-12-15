@@ -4,9 +4,9 @@
   </div>
 </section>
 
-<form class="form-horizontal" role="form">
+<div class="container">
+  <form class="form-horizontal" role="form" [formGroup]="form" (ngSubmit)="onSubmit()">
 
-  <div class="container mb-4 col-md-8">
     <div class="row">
       <div class="col-md-3 field-label-responsive">
         <label>E-mail</label>
@@ -19,8 +19,16 @@
             </div>
             <input type="email" name="price-enter" class="form-control"
                    id="price-input" required
-                   [(ngModel)]="email" [ngModelOptions]="{standalone: true}">
+                   [(ngModel)]="email"
+                   formControlName="email" [ngClass]="{ 'is-invalid': submitted && c.email.errors }">
           </div>
+        </div>
+      </div>
+      <div *ngIf="submitted && c.email.errors" class="col-md-3">
+        <div class="form-control-feedback">
+                        <span class="text-danger align-right">
+                            Niepoprawny email
+                        </span>
         </div>
       </div>
     </div>
@@ -36,8 +44,16 @@
             </div>
             <input type="password" name="price-enter" class="form-control"
                    id="amount-input" required
-                   [(ngModel)]="password" [ngModelOptions]="{standalone: true}">
+                   [(ngModel)]="password"
+                   formControlName="password" [ngClass]="{ 'is-invalid': submitted && c.password.errors }">
           </div>
+        </div>
+      </div>
+      <div *ngIf="submitted && c.password.errors" class="col-md-3">
+        <div class="form-control-feedback">
+                        <span class="text-danger align-right">
+                            Niepoprawne hasło
+                        </span>
         </div>
       </div>
     </div>
@@ -52,8 +68,16 @@
             </div>
             <input type="password" name="price-enter" class="form-control"
                    id="password-repeat" required
-                   [(ngModel)]="rePassword" [ngModelOptions]="{standalone: true}">
+                   [(ngModel)]="rePassword"
+                   formControlName="rePassword" [ngClass]="{ 'is-invalid': submitted && c.rePassword.errors }">
           </div>
+        </div>
+      </div>
+      <div *ngIf="submitted && c.rePassword.errors" class="col-md-3">
+        <div class="form-control-feedback">
+                        <span class="text-danger align-right">
+                            Hasła nie są takie same
+                        </span>
         </div>
       </div>
     </div>
@@ -69,8 +93,16 @@
             </div>
             <input type="text" name="price-enter" class="form-control"
                    id="username" required
-                   [(ngModel)]="username" [ngModelOptions]="{standalone: true}">
+                   [(ngModel)]="username"
+                   formControlName="username" [ngClass]="{ 'is-invalid': submitted && c.username.errors }">
           </div>
+        </div>
+      </div>
+      <div *ngIf="submitted && c.username.errors" class="col-md-3">
+        <div class="form-control-feedback">
+                        <span class="text-danger align-right">
+                            Niepoprawna nazwa użytkownika
+                        </span>
         </div>
       </div>
     </div>
@@ -86,8 +118,16 @@
             </div>
             <input type="text" name="price-enter" class="form-control"
                    id="address" required
-                   [(ngModel)]="address" [ngModelOptions]="{standalone: true}">
+                   [(ngModel)]="address"
+                   formControlName="address" [ngClass]="{ 'is-invalid': submitted && c.address.errors }">
           </div>
+        </div>
+      </div>
+      <div *ngIf="submitted && c.address.errors" class="col-md-3">
+        <div class="form-control-feedback">
+                        <span class="text-danger align-right">
+                            Niepoprawny adres
+                        </span>
         </div>
       </div>
     </div>
@@ -97,5 +137,5 @@
         <button (click)="register()" type="submit" class="btn btn-success"><i class="fa fa-user-plus"></i>Zarejestruj się</button>
       </div>
     </div>
-  </div>
-</form>
+  </form>
+</div>

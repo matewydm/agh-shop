@@ -36,6 +36,7 @@ export class UserService {
         });
       } else {
         this.isLoggedIn = false;
+        this.data = new UserData();
         console.log('Not user uid provided, role not known');
       }
     });

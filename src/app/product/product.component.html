@@ -19,8 +19,20 @@
     </div>
     <br/>
     <div class="text-nowrap" >
-      Dostępność: <p class="text-right text-success">{{product.amount}} szt.</p>
-      Cena: <p class="text-right text-primary">{{product.price}} PLN</p>
+      <div *ngIf="product.amount != 0">
+        Dostępność: <p class="text-right text-success">{{product.amount}} szt.</p>
+      </div>
+      <div *ngIf="product.amount === 0">
+        Dostępność: <p class="text-right text-danger">{{product.amount}} szt.</p>
+      </div>
+      <div *ngIf="!isPromotionActive()">
+        Cena: <p class="text-right text-primary">{{product.price}} PLN</p>
+      </div>
+      <div *ngIf="isPromotionActive()">
+        Cena promocyjna:
+              <span class="badge badge-danger">- {{product.promotion.percentage}} %</span>
+              <p class="text-right text-primary">{{countPromotionPrice()}} PLN</p>
+      </div>
     </div>
     <div class="row">
       <div class="col-md-6 text-left" *ngIf="isRole('ADMIN')" >

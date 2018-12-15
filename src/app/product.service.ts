@@ -1,5 +1,5 @@
 import {Injectable, OnInit} from '@angular/core';
-import {AngularFirestore, CollectionReference, Query, QueryFn} from 'angularfire2/firestore';
+import {AngularFirestore, CollectionReference, Query} from 'angularfire2/firestore';
 import {Observable} from 'rxjs';
 import {ProductFilter} from './model/productFilter';
 import {Product} from './model/product';
@@ -15,11 +15,33 @@ export class ProductService implements OnInit {
   ngOnInit() {
   }
 
+  isPromotionActive(product: Product) {
+    if (product.promotion != null &&
+        product.promotion.percentage != null &&
+        product.promotion.expirationDate != null) {
+      if (product.promotion.expirationDate instanceof Date) {
+        return product.promotion.expirationDate.getTime() > new Date().getTime();
+      }
+      const expirationDate: any = product.promotion.expirationDate;
+      return expirationDate.seconds > new Date().getTime() / 1000;
+    }
+    return false;
+  }
+
+  countPromotionPrice(product: Product) {
+    if (this.isPromotionActive(product)) {
+      const price = product.price - (product.price * product.promotion.percentage / 100);
+      return Math.round(price * 100) / 100;
+    } else {
+      return product.price;
+    }
+  }
+
   async getProduct(id: string) {
     return await this.db.collection('/product').doc(id).ref.get().then();
   }
 
-   getProducts(filter: ProductFilter): Observable<any[]> {
+  getProducts(filter: ProductFilter): Observable<any[]> {
     const db = this.db.collection('/product', ref => this.applyFilters(ref, filter));
     return db.valueChanges();
   }
@@ -50,14 +72,6 @@ export class ProductService implements OnInit {
     if (filter.name) {
       query = query.where('name', '==', filter.name);
     }
-    if (filter.selectedCategories.some(e => e.selected) ) {
-      console.log(filter.selectedCategories);
-      filter.selectedCategories.filter(e => e.selected).forEach(e => {
-        query = query.where('category', '==', e.category);
-      });
-    }
-    query = query.startAt(filter.startIndex.toString());
-    query = query.endAt(filter.endIndex.toString());
     return query;
   }
 
@@ -65,12 +79,6 @@ export class ProductService implements OnInit {
     let query = ref.orderBy('id');
     if (filter.name) {
       query = query.where('name', '==', filter.name);
-    }
-    if (filter.selectedCategories.some(e => e.selected) ) {
-      console.log(filter.selectedCategories);
-      filter.selectedCategories.filter(e => e.selected).forEach(e => {
-        query = query.where('category', '==', e.category);
-      });
     }
     return query;
   }

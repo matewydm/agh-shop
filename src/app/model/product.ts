@@ -17,6 +17,7 @@ export class Product {
     this.category = category;
     this.description = description;
     this.amount = amount;
+    this.promotion = null;
   }
 }
 

@@ -2,34 +2,33 @@
   <div class="album py-5 bg-light">
     <div class="container">
         <div class="row">
-        <div class="col-xs-12 col-lg-12 col-md-12 col-sm-12 col--noPadding">
-          <div class="input-group">
-            <div class="input-group-btn search-panel col-lg-12 col-md-12 col-sm-12 col-xs-12 col--noPadding">
-              <ul class="d-inline-block" ngbDropdown #myDrop="ngbDropdown">
-                <button type="button" class="btn btn-outline-primary mr-2" id="dropdownManual" ngbDropdownAnchor (focus)="myDrop.open()">
-                  <span id="search_concept">Wybierz kategorie</span> <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" role="menu" ngbDropdownMenu aria-labelledby="dropdownManual">
-                  <li *ngFor="let category of selectedCategories">
-                    <input class="dropdown-item" type="checkbox" [(ngModel)]="category.selected" [ngModelOptions]="{standalone: true}" (change)="filterProductList()">{{category.category}}
-                  </li>
-                </ul>
-              </ul>
-              <input type="hidden" name="search_param" value="all" id="search_param">
-              <input (input)="filterProductList()" [(ngModel)]="searchText" [ngModelOptions]="{standalone: true}">
-              <span class="input-group-btn">
-                <button class="btn btn-default" type="button"><span class="fa fa-search"></span></button>
-              </span>
-              <ng-select class="form-control input-lg pull-right productList_ngSelect" [(ngModel)]="pageSize" (change)="refreshPage()" [items]="pageSizes"></ng-select>
-            </div>
+          <div class="col-md-4">
+            <ngx-select-dropdown [config]="{placeholder:'Kategorie',
+                                            moreText: 'więcej',
+                                            noResultsFound: 'Brak więcej kategorii',
+                                            displayKey:'category'}"
+                                 [options]="categories"
+                                 [(value)]="selectedCategories"
+                                 (change)="filterProductList()"
+                                 [multiple]="true" ></ngx-select-dropdown>
+          </div>
+          <div class="col-md-4">
+            <input style="width: 80%" (input)="filterProductList()" [(ngModel)]="searchText" [ngModelOptions]="{standalone: true}">
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="button"><span class="fa fa-search"></span></button>
+            </span>
+          </div>
+          <div class="col-md-4">
+            <ngx-select-dropdown [options]="pageSizes"
+                                 [config]="{placeholder:'Ilość wyników na stronie'}"
+                                 [(value)]="pageSize" [multiple]="false" ></ngx-select-dropdown>
           </div>
         </div>
-      </div>
-
-      <div class="row" >
+      <br/>
+      <div class="row">
         <app-product class="col-md-4"
                      [product]="product"
-                     *ngFor="let product of filteredProductList | async"
+                     *ngFor="let product of filteredProductList"
                      (remove)="removeEventListener($event)"
                      (subtract)="subtractEventListener($event)"
                      (add)="addEventListener($event)"

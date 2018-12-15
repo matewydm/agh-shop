@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import {Product} from './model/product';
 import {BasketProduct} from './model/basket';
+import {ProductService} from './product.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BasketService {
 
-  constructor() { }
+  constructor(private prodcutService: ProductService) { }
 
   getBasket(): BasketProduct[] {
     const item = localStorage.getItem('basket');
@@ -67,7 +68,7 @@ export class BasketService {
   }
 
   getFullItemPrice(item) {
-    const fullPrice = item.amount * item.product.price;
+    const fullPrice = item.amount * this.prodcutService.countPromotionPrice(item.product);
     return Math.round(fullPrice * 100) / 100;
   }
 

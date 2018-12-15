@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 
-import { FormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -27,8 +27,25 @@ import { UserService } from './user.service';
 import { RegistrationComponent } from './registration/registration.component';
 import { ItemListComponent } from './item-list/item-list.component';
 import { PromotionComponent } from './promotion/promotion.component';
+import {DlDateTimePickerDateModule} from 'angular-bootstrap-datetimepicker';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {SelectDropDownModule} from 'ngx-select-dropdown';
 
 @NgModule({
+  imports: [
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireDatabaseModule,
+    AngularFirestoreModule,
+    AngularFireAuthModule,
+    SelectDropDownModule,
+    ReactiveFormsModule,
+    BrowserModule,
+    FormsModule,
+    NgbModule,
+    NgSelectModule,
+    AppRoutingModule,
+    DlDateTimePickerDateModule
+  ],
   declarations: [
     AppComponent,
     ProductComponent,
@@ -44,17 +61,6 @@ import { PromotionComponent } from './promotion/promotion.component';
     RegistrationComponent,
     ItemListComponent,
     PromotionComponent
-  ],
-  imports: [
-    AngularFireModule.initializeApp(environment.firebase),
-    AngularFireDatabaseModule,
-    AngularFirestoreModule,
-    AngularFireAuthModule,
-    BrowserModule,
-    FormsModule,
-    NgbModule,
-    NgSelectModule,
-    AppRoutingModule
   ],
   providers: [ProductService, UserService, NgbActiveModal],
   bootstrap: [AppComponent],

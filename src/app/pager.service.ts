@@ -42,8 +42,8 @@ export class PagerService {
       totalPages: totalPages,
       startPage: startPage,
       endPage: endPage,
-      startIndex: startIndex + 1,
-      endIndex: endIndex + 1,
+      startIndex: startIndex,
+      endIndex: endIndex,
       pages: pages
     };
   }

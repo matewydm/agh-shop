@@ -7,7 +7,7 @@
 <div class="modal-body">
 
   <div class="container">
-    <form class="form-horizontal" role="form">
+    <form class="form-horizontal" role="form" [formGroup]="form" (ngSubmit)="onSubmit()">
       <div class="row">
         <div class="col-md-3 field-label-responsive">
           <label for="email">Email</label>
@@ -18,14 +18,15 @@
               <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-at"></i></div>
               <input type="email" name="email" class="form-control" id="email"
                      [required]="true"
-                     [(ngModel)]="userData.email" [ngModelOptions]="{standalone: true}">
+                     [(ngModel)]="userData.email"
+                     formControlName="email" [ngClass]="{ 'is-invalid': submitted && c.email.errors }"/>
             </div>
           </div>
         </div>
-        <div class="col-md-3">
+        <div *ngIf="submitted && c.email.errors" class="col-md-3">
           <div class="form-control-feedback">
-                        <span class="text-danger align-middle">
-                          Dare
+                        <span class="text-danger align-right">
+                            Niepoprawny email
                         </span>
           </div>
         </div>
@@ -40,14 +41,15 @@
               <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-font"></i></div>
               <input type="text" name="username" class="form-control" id="username"
                      [required]="true"
-                     [(ngModel)]="userData.username" [ngModelOptions]="{standalone: true}">
+                     [(ngModel)]="userData.username"
+                     formControlName="username" [ngClass]="{ 'is-invalid': submitted && c.username.errors }"/>
             </div>
           </div>
         </div>
-        <div class="col-md-3">
+        <div *ngIf="submitted && c.percentage.errors" class="col-md-3">
           <div class="form-control-feedback">
-                        <span class="text-danger align-middle">
-                            <!-- Put name validation error messages here -->
+                        <span class="text-danger align-right">
+                            Niepoprawna nazwa
                         </span>
           </div>
         </div>
@@ -62,8 +64,16 @@
               <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-address-card"></i></div>
               <input type="text" name="name" class="form-control" id="address"
                      required autofocus
-                     [(ngModel)]="userData.address" [ngModelOptions]="{standalone: true}">
+                     [(ngModel)]="userData.address"
+                     formControlName="address" [ngClass]="{ 'is-invalid': submitted && c.address.errors }"/>
             </div>
+          </div>
+        </div>
+        <div *ngIf="submitted && c.address.errors" class="col-md-3">
+          <div class="form-control-feedback">
+                        <span class="text-danger align-right">
+                            Niepoprawny adres
+                        </span>
           </div>
         </div>
       </div>

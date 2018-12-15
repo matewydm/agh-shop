@@ -32,7 +32,7 @@ export class OrderService {
         this.updateOrder(order);
       })
       .catch(e => {
-        console.log('Wykryto błąd');
+        console.log('Wykryto błąd', e);
         isError = true;
       });
     if (isError) {
@@ -46,7 +46,7 @@ export class OrderService {
     console.log('Przyjęto do realizacji.');
     let isError = false;
     order.items = items;
-    const realisedItems = order.items.filter(item => item.isRealised);
+    const realisedItems: OrderProduct[] = order.items.filter(item => !item.isRealised);
     console.log(realisedItems);
     await this.realizeItems(realisedItems)
       .then(() => {
@@ -79,13 +79,15 @@ export class OrderService {
     }
   }
 
-  async realizeItems(items): Promise<boolean> {
+  async realizeItems(items: OrderProduct[]): Promise<boolean> {
     let isError = false;
-    await Promise.all(items.forEach(async item => {
-      await this.realizeItem(item).catch(() => {
-        isError = true;
-      });
-    }));
+    if (items != null && items.length != null) {
+      await Promise.all(items.map(async item => {
+        await this.realizeItem(item).catch(() => {
+          isError = true;
+        });
+      }));
+    }
     return isError;
   }
 

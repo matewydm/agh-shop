@@ -14,6 +14,7 @@ export class CheckoutService {
   makeOrder(result: any, basket: BasketProduct[], price: number) {
     const orderProduct = basket.map(basketItem => Object.assign({}, new OrderProduct(false, basketItem)));
     const order = new Order(orderProduct, result.id, result.email, result.username, result.address, price);
+    order.items.forEach(item => item.orderItem.product.promotion = null);
     this.updateOrder(order);
   }
 
