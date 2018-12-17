@@ -27,7 +27,7 @@ export class BasketService {
     const basket = this.getBasket();
     let isStored = false;
     for (const item of basket) {
-      if (item.product.id === product.id) {
+      if (item.product._id === product._id) {
         isStored = true;
         if (item.amount + 1 <= item.product.amount) {
           item.amount++;
@@ -47,7 +47,7 @@ export class BasketService {
     const basket = this.getBasket();
     let isStored = false;
     for (const item of basket) {
-      if (item.product.id === product.id) {
+      if (item.product._id === product._id) {
         if (item.amount === 1) {
           basket.splice(basket.indexOf(item), 1);
         }
@@ -68,7 +68,7 @@ export class BasketService {
   }
 
   getFullItemPrice(item) {
-    const fullPrice = item.amount * this.prodcutService.countPromotionPrice(item.product);
+    const fullPrice = item.amount * item.product.price;
     return Math.round(fullPrice * 100) / 100;
   }
 

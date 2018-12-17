@@ -51,12 +51,19 @@ export class ProductListComponent implements OnInit {
     if (product.amount > 0) {
       product.amount--;
       this.productService.addProduct(product);
+      this.getProducts();
     }
   }
 
   addEventListener(product) {
     product.amount++;
     this.productService.addProduct(product);
+    this.getProducts();
+  }
+
+  promotionEventListener(product) {
+    this.productService.addProduct(product);
+    this.getProducts();
   }
 
   filterProductList() {

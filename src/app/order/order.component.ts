@@ -6,6 +6,8 @@ import {OrderFilter} from '../model/orderFilter';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ItemListComponent} from '../item-list/item-list.component';
 import {OrderProduct} from '../model/orderProduct';
+import {UserService} from '../user.service';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-order',
@@ -14,18 +16,21 @@ import {OrderProduct} from '../model/orderProduct';
 })
 export class OrderComponent implements OnInit {
 
-  orders: Observable<Order[]>;
+  orders: Order[];
   status: string;
   filter: OrderFilter;
 
   constructor(private orderService: OrderService,
+              private userService: UserService,
+              private toast: ToastrService,
               private modalService: NgbModal) { }
 
   ngOnInit() {
     this.status = 'NOT_REALISED';
     this.filter = new OrderFilter(this.status, null);
-    this.orders = this.orderService.getOrders(this.filter);
-    this.orders.subscribe(o => console.log(o));
+    this.orderService.getOrders(this.filter).subscribe(e => {
+      this.orders = e;
+    });
   }
 
   getOrderItemNames(order: Order): string {
@@ -35,19 +40,17 @@ export class OrderComponent implements OnInit {
   filterStatus(status: string) {
     this.status = status;
     this.filter.status = status;
-    this.orders = this.orderService.getOrders(this.filter);
+    this.orderService.getOrders(this.filter).subscribe(e => {
+      this.orders = e;
+    });
   }
 
   realizeOrder(order) {
-    this.orderService.realizeOrder(order).catch(e => {
-      console.log('Zamówienie nie zostało zrealizowane');
-    });
+    this.orderService.realizeOrder(order);
   }
 
   realizeSingleItems(order, items) {
-    this.orderService.realizeSingleItems(order, items).catch(e => {
-      console.log('Nie odznaczono elementów jako zrealizowane, sprawdź dostępnośc produktów w magazynie.', e);
-    });
+    this.orderService.realizeSingleItems(order, items);
   }
 
   openSingleItemModal(order: Order) {
@@ -57,11 +60,16 @@ export class OrderComponent implements OnInit {
       this.realizeSingleItems(order, result.items);
     }).catch((error) => {
       console.log(error);
+      this.toast.error('Aktualizacja zamówienia nie została dokonana.');
     });
   }
 
   isRealised() {
     return this.status === 'REALISED';
+  }
+
+  private isRole(role: string) {
+    return this.userService.isRole(role);
   }
 
 }

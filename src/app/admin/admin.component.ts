@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {ProductCreatorComponent} from '../product-creator/product-creator.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {UserService} from '../user.service';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-admin',
@@ -11,6 +12,7 @@ import {UserService} from '../user.service';
 export class AdminComponent implements OnInit {
 
   constructor(private modalService: NgbModal,
+              private toast: ToastrService,
               private userService: UserService) { }
 
   ngOnInit() {
@@ -26,6 +28,7 @@ export class AdminComponent implements OnInit {
       console.log(result);
     }).catch((error) => {
       console.log(error);
+      this.toast.error('Dodawanie produktu nie powiodło się.');
     });
   }
 

@@ -23,7 +23,7 @@ export class ProductCreatorComponent implements OnInit {
     this.form = this.formBuilder.group({
       id: ['', Validators.required],
       name: ['', Validators.required],
-      description: ['', [Validators.required, Validators.email]],
+      description: ['', [Validators.required]],
       category: ['', [Validators.required]],
       link: ['', [Validators.required, Validators.pattern('http://.*')]],
       price: ['', [Validators.required, Validators.min(1)]],

@@ -5,6 +5,7 @@ import {CheckoutConfirmComponent} from '../checkout-confirm/checkout-confirm.com
 import {CheckoutService} from '../checkout.service';
 import {Router} from '@angular/router';
 import {UserService} from '../user.service';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-checkout',
@@ -16,6 +17,7 @@ export class CheckoutComponent implements OnInit {
   constructor(private basketService: BasketService,
               private checkoutService: CheckoutService,
               private userService: UserService,
+              private toast: ToastrService,
               private router: Router,
               private modalService: NgbModal) { }
 
@@ -53,12 +55,14 @@ export class CheckoutComponent implements OnInit {
       this.finishCheckout(result);
     }).catch((error) => {
       console.log(error);
+      this.toast.error('Potwierdzenie zamówienia nie powiodło się.');
     });
   }
 
   finishCheckout(result) {
     this.checkoutService.makeOrder(result, this.getBasket(), this.getOrderPrice());
     this.basketService.emptyBasket();
+    this.toast.success('Potwierdzenie zakupu dokonane.');
     this.router.navigate(['/productList']);
   }
 }

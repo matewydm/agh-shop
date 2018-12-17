@@ -6,6 +6,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ProductCreatorComponent} from '../product-creator/product-creator.component';
 import {PromotionComponent} from '../promotion/promotion.component';
 import {ProductService} from '../product.service';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-product',
@@ -17,11 +18,13 @@ export class ProductComponent implements OnInit {
   @Input() product: Product;
   @Output() remove = new EventEmitter();
   @Output() add = new EventEmitter();
+  @Output() promotion = new EventEmitter();
   @Output() subtract = new EventEmitter();
 
   constructor(private basketService: BasketService,
               private userService: UserService,
               private productService: ProductService,
+              private toast: ToastrService,
               private modalService: NgbModal) { }
 
   ngOnInit() {
@@ -54,6 +57,7 @@ export class ProductComponent implements OnInit {
       console.log(result);
     }).catch((error) => {
       console.log(error);
+      this.toast.error('Edycja produktu nie powiodła się.');
     });
   }
 
@@ -62,9 +66,10 @@ export class ProductComponent implements OnInit {
     modalRef.componentInstance.product = JSON.parse(JSON.stringify(product));
     modalRef.result.then((result) => {
       console.log(result.product);
-      this.productService.addProduct(result.product);
+      this.promotion.emit(result.product);
     }).catch((error) => {
       console.log(error);
+      this.toast.error('Nie udało się dodać promocji');
     });
   }
 
@@ -73,7 +78,7 @@ export class ProductComponent implements OnInit {
   }
 
   isPromotionActive() {
-    return this.productService.isPromotionActive(this.product);
+    return this.product.promotion != null;
   }
 
   private isRole(role: string) {

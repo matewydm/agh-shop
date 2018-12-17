@@ -5,6 +5,7 @@ import { User } from 'firebase';
 import {AngularFirestore} from 'angularfire2/firestore';
 import {Customer} from './model/customer';
 import {UserData} from './model/userData';
+import {ToastrService} from 'ngx-toastr';
 
 
 @Injectable({
@@ -18,6 +19,7 @@ export class UserService {
   data: UserData = new UserData();
 
   constructor(private fireAuth: AngularFireAuth,
+              private toast: ToastrService,
               private db: AngularFirestore) {
 
     this.user = fireAuth.authState;
@@ -46,6 +48,7 @@ export class UserService {
     this.fireAuth.auth.createUserWithEmailAndPassword(customer.email, customer.password)
       .then(value => {
         console.log('Zarejestrowano pomyślnie w Firebase!', value);
+        this.toast.success('Rejestracja zakończona sukcesem.');
         customer.id = value.user.uid;
         this.addUserData(customer);
       })
@@ -67,9 +70,11 @@ export class UserService {
   signIn(email: string, password: string) {
     this.fireAuth.auth.signInWithEmailAndPassword(email, password)
       .then(value => {
+        this.toast.success('Zalogowałeś się pomyślnie.');
         console.log('Zalogowano pomyślnie', value);
       })
       .catch(error => {
+        this.toast.error('Nie udało się zalogować, spróbuj ponownie.');
         console.log('Nie udało się zalogować', error.message);
       });
   }

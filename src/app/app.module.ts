@@ -28,17 +28,27 @@ import { RegistrationComponent } from './registration/registration.component';
 import { ItemListComponent } from './item-list/item-list.component';
 import { PromotionComponent } from './promotion/promotion.component';
 import {DlDateTimePickerDateModule} from 'angular-bootstrap-datetimepicker';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {SelectDropDownModule} from 'ngx-select-dropdown';
+import {HttpClientModule} from '@angular/common/http';
+import {MessageComponent} from './message/message.component';
+import {SocketIoConfig, SocketIoModule} from 'ngx-socket-io';
+import {ToastrModule} from 'ngx-toastr';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+
+const socketIoConfig: SocketIoConfig = { url: 'http://localhost:5000', options: {} };
 
 @NgModule({
   imports: [
     AngularFireModule.initializeApp(environment.firebase),
+    SocketIoModule.forRoot(socketIoConfig),
+    ToastrModule.forRoot(),
     AngularFireDatabaseModule,
+    BrowserAnimationsModule,
     AngularFirestoreModule,
     AngularFireAuthModule,
     SelectDropDownModule,
     ReactiveFormsModule,
+    HttpClientModule,
     BrowserModule,
     FormsModule,
     NgbModule,
@@ -49,6 +59,7 @@ import {SelectDropDownModule} from 'ngx-select-dropdown';
   declarations: [
     AppComponent,
     ProductComponent,
+    MessageComponent,
     ProductListComponent,
     NavbarComponent,
     FooterComponent,
@@ -69,6 +80,7 @@ import {SelectDropDownModule} from 'ngx-select-dropdown';
     UserLoginComponent,
     CheckoutConfirmComponent,
     ItemListComponent,
-    PromotionComponent]
+    PromotionComponent],
+  exports: [MessageComponent]
 })
 export class AppModule { }

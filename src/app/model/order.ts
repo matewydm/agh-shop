@@ -1,7 +1,7 @@
 import {OrderProduct} from './orderProduct';
 
 export class Order {
-  id: string;
+  _id: string;
   items: OrderProduct[];
   userId: string;
   email: string;
@@ -15,7 +15,7 @@ export class Order {
               username: string,
               address: string,
               price: number) {
-    this.id =  Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    this._id =  Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
     this.items = items;
     this.userId = userId;
     this.email = email;

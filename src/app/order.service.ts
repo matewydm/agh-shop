@@ -6,6 +6,9 @@ import {Order} from './model/order';
 import {OrderProduct} from './model/orderProduct';
 import {ProductService} from './product.service';
 import {Product} from './model/product';
+import {map} from 'rxjs/internal/operators';
+import {HttpClient} from '@angular/common/http';
+import {RestService} from './rest.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,32 +16,62 @@ import {Product} from './model/product';
 export class OrderService {
 
   constructor(private db: AngularFirestore,
+              private http: HttpClient,
+              private rest: RestService,
               private productService: ProductService) { }
 
-  getOrders(filter: OrderFilter): Observable<any[]> {
-    const db = this.db.collection('/order', ref => this.applyFilters(ref, filter));
-    return db.valueChanges();
+  getOrders(filter: OrderFilter): Observable<any> {
+    const dare = this.http.get(this.rest.endpoint + 'order?status=' + filter.status)
+      .pipe(map(this.rest.extractData));
+    dare.toPromise().then(e => console.log(e));
+    return dare;
   }
 
-  async realizeOrder(order: Order) {
-    order.status = 'IN_PROGRESS';
-    this.updateOrder(order);
-    console.log('Przyjęto do realizacji.');
-    let isError = false;
-    await this.realizeItems(order.items)
-      .then(() => {
-        console.log('Nie wykryto błędów, realizowanie zamówienia.');
-        order.status = 'REALISED';
-        this.updateOrder(order);
+  realizeOrder(order: Order) {
+    const dare = this.http.post(this.rest.endpoint + 'order/realize', order)
+      .pipe(map(this.rest.extractData));
+    dare.toPromise()
+      .then(e => {
+        console.log(e);
       })
       .catch(e => {
-        console.log('Wykryto błąd', e);
-        isError = true;
+        console.log('Zamówienie nie zostało zrealizowane');
       });
-    if (isError) {
-      throw new Error('Zamówienie nie zostało zrealizowane');
-    }
+    return dare;
   }
+
+  realizeSingleItems(order: Order, items: OrderProduct[]) {
+    const dare = this.http.post(this.rest.endpoint + 'order/realize/part?id=' + order._id, items)
+      .pipe(map(this.rest.extractData));
+    dare.toPromise()
+      .then(e => {
+        console.log(e);
+      })
+      .catch(e => {
+        console.log('Zamówienie częściowe nie zostało zrealizowane');
+      });
+    return dare;
+  }
+
+  // async realizeOrder(order: Order) {
+  //   order.status = 'IN_PROGRESS';
+  //   this.updateOrder(order);
+  //   console.log('Przyjęto do realizacji.');
+  //   let isError = false;
+  //   await this.realizeItems(order.items)
+  //     .then(() => {
+  //       console.log('Nie wykryto błędów, realizowanie zamówienia.');
+  //       order.status = 'REALISED';
+  //       this.updateOrder(order);
+  //     })
+  //     .catch(e => {
+  //       console.log('Wykryto błąd', e);
+  //       isError = true;
+  //     });
+  //   if (isError) {
+  //     throw new Error('Zamówienie nie zostało zrealizowane');
+  //   }
+  // }
 
   async realizePartialOrder(order: Order, items: OrderProduct[]) {
     order.status = 'IN_PROGRESS';
@@ -62,22 +95,20 @@ export class OrderService {
     }
   }
 
-  async realizeSingleItems(order: Order, items: OrderProduct[]) {
-    let isError = false;
-    const isAnyNotRealised = items.filter(item => item.isRealised === false).length > 0;
-    if (!isAnyNotRealised) {
-      await this.realizeOrder(order).catch(e => {
-        isError = true;
-      });
-    } else {
-      await this.realizePartialOrder(order, items).catch(e => {
-        isError = true;
-      });
-    }
-    if (isError) {
-      throw new Error('Częściowe zamówienie nie zostało zrealizowane');
-    }
-  }
+  // async realizeSingleItems(order: Order, items: OrderProduct[]) {
+  //   let isError = false;
+  //   const isAnyNotRealised = items.filter(item => item.isRealised === false).length > 0;
+  //   if (!isAnyNotRealised) {
+  //     await this.realizeOrder(order);
+  //   } else {
+  //     await this.realizePartialOrder(order, items).catch(e => {
+  //       isError = true;
+  //     });
+  //   }
+  //   if (isError) {
+  //     throw new Error('Częściowe zamówienie nie zostało zrealizowane');
+  //   }
+  // }
 
   async realizeItems(items: OrderProduct[]): Promise<boolean> {
     let isError = false;
@@ -94,7 +125,7 @@ export class OrderService {
   async realizeItem(item: OrderProduct) {
     const orderedAmount = item.orderItem.amount;
     let isError = false;
-    await this.productService.getProduct(item.orderItem.product.id).then(p => {
+    await this.productService.getProduct(item.orderItem.product._id).then(p => {
       if (p.exists) {
         const product = p.data() as Product;
         if (product.amount < orderedAmount) {
@@ -123,7 +154,7 @@ export class OrderService {
   }
 
   updateOrder(order: Order) {
-    this.db.collection('/order').doc(order.id).set(Object.assign({}, order))
+    this.db.collection('/order').doc(order._id).set(Object.assign({}, order))
       .then(function() {
         console.log('Zamówienie pomyślnie zaktualizowane:', order);
       });

@@ -26,8 +26,8 @@
           </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let order of orders | async" (click)="openSingleItemModal(order)">
-            <td align="center">{{order.id}}  </td>
+          <tr *ngFor="let order of orders" (click)="openSingleItemModal(order)">
+            <td align="center">{{order._id}}  </td>
             <td align="center">{{order.username}}</td>
             <td align="center">{{order.address}}</td>
             <td align="center">{{getOrderItemNames(order)}}</td>

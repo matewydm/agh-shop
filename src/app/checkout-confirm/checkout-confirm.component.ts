@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {UserData} from '../model/userData';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-checkout-confirm',
@@ -15,6 +16,7 @@ export class CheckoutConfirmComponent implements OnInit {
   submitted = false;
 
   constructor(public activeModal: NgbActiveModal,
+              private toast: ToastrService,
               private formBuilder: FormBuilder) { }
 
   ngOnInit() {
@@ -30,7 +32,7 @@ export class CheckoutConfirmComponent implements OnInit {
   checkout() {
     this.submitted = true;
     if (this.form.invalid) {
-      console.log('Błędy formularza potwierdzania zamówienia promocji');
+      this.toast.error('Wystąpiły błędy formularza.');
       return;
     }
     this.activeModal.close({

@@ -3,13 +3,18 @@ import {BasketProduct} from './model/basket';
 import {Order} from './model/order';
 import {AngularFirestore} from 'angularfire2/firestore';
 import {OrderProduct} from './model/orderProduct';
+import {map} from 'rxjs/internal/operators';
+import {HttpClient} from '@angular/common/http';
+import {RestService} from './rest.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CheckoutService {
 
-  constructor(private db: AngularFirestore) { }
+  constructor(private db: AngularFirestore,
+              private rest: RestService,
+              private http: HttpClient) { }
 
   makeOrder(result: any, basket: BasketProduct[], price: number) {
     const orderProduct = basket.map(basketItem => Object.assign({}, new OrderProduct(false, basketItem)));
@@ -19,10 +24,10 @@ export class CheckoutService {
   }
 
   updateOrder(order: Order) {
-    this.db.collection('/order').doc(order.id).set(Object.assign({}, order))
-      .then(function() {
-        console.log('Product successfully added:', order);
-      });
+    const dare = this.http.put(this.rest.endpoint + 'order', order).pipe(
+      map(this.rest.extractData));
+    dare.toPromise().then(e => console.log(e));
+    return dare;
   }
 
 }

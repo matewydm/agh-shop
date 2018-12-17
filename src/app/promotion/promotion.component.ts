@@ -4,6 +4,7 @@ import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {Promotion} from '../model/promotion';
 import {Timestamp} from 'rxjs';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-promotion',
@@ -17,6 +18,7 @@ export class PromotionComponent implements OnInit {
   submitted = false;
 
   constructor(public activeModal: NgbActiveModal,
+              private toast: ToastrService,
               private formBuilder: FormBuilder) { }
 
   ngOnInit() {
@@ -32,6 +34,7 @@ export class PromotionComponent implements OnInit {
   addPromotion() {
     this.submitted = true;
     if (this.form.invalid) {
+      this.toast.error('Wystąpiły błędy formularza dodawania promocji.');
       console.log('Błędy formularza dodawania promocji');
       return;
     }

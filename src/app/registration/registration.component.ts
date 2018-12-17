@@ -3,6 +3,7 @@ import {UserService} from '../user.service';
 import {Customer} from '../model/customer';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-registration',
@@ -21,6 +22,7 @@ export class RegistrationComponent implements OnInit {
 
   constructor(public userService: UserService,
               private router: Router,
+              private toast: ToastrService,
               private formBuilder: FormBuilder) { }
 
   ngOnInit() {
@@ -38,12 +40,14 @@ export class RegistrationComponent implements OnInit {
   register() {
     this.submitted = true;
     if (this.form.invalid) {
-      console.log('Błędy formularza dodawania produktu');
+      this.toast.error('Wystąpiły błędy formularza rejestracj.');
+      console.log('Błędy formularza rejestracji.');
       return;
     }
     if (this.password === this.rePassword) {
       this.userService.register(new Customer(null, this.email, this.password, this.username, this.address));
     } else {
+      this.toast.error('Hasła nie są zgodne.');
       console.log('Hasła nie są zgodne');
     }
     this.router.navigate(['/productList']);
