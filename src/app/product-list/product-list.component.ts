@@ -3,6 +3,7 @@ import {ProductService} from '../product.service';
 import {Product} from '../model/product';
 import {ProductFilter} from '../model/productFilter';
 import {PagerService} from '../pager.service';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-product-list',
@@ -12,6 +13,7 @@ import {PagerService} from '../pager.service';
 export class ProductListComponent implements OnInit {
 
   constructor(private productService: ProductService,
+              private toast: ToastrService,
               private pagerService: PagerService) {
   }
 
@@ -31,7 +33,7 @@ export class ProductListComponent implements OnInit {
     this.allSize = 6;
     this.categories.push('Odzież');
     this.categories.push('Gadget');
-    this.filter = new ProductFilter(this.searchText, [], this.pageSize, 1, this.pageSize);
+    this.filter = new ProductFilter(this.searchText, [], this.pageSize, 0, this.pageSize-1);
     this.getProducts();
     this.setPage(1);
   }
@@ -52,6 +54,8 @@ export class ProductListComponent implements OnInit {
       product.amount--;
       this.productService.addProduct(product);
       this.getProducts();
+    } else {
+      this.toast.error('Nie można zmniejszyć dostępności', 'Brak towaru na stanie');
     }
   }
 

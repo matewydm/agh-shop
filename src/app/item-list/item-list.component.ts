@@ -18,7 +18,7 @@ export class ItemListComponent implements OnInit {
 
   updateOrder() {
     this.activeModal.close({
-      items: this.items,
+      items: this.items.filter(e => e.isRealised === true)
     });
   }
 }

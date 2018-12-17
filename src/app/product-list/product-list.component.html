@@ -20,6 +20,7 @@
           </div>
           <div class="col-md-4">
             <ngx-select-dropdown [options]="pageSizes"
+                                 (change)="refreshPage()"
                                  [config]="{placeholder:'Ilość wyników na stronie'}"
                                  [(value)]="pageSize" [multiple]="false" ></ngx-select-dropdown>
           </div>

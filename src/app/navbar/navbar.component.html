@@ -11,7 +11,7 @@
           <i class="fa fa-list-ul">  Lista produktów</i>
         </a>
       </div>
-      <div *ngIf="isRole('ADMIN')">
+      <div *ngIf="isRole('ADMIN') || isRole('OPERATOR')">
         <a routerLink="/adminPanel" class="navbar-brand d-flex align-items-center">
           <i class="fa fa-shield">  Panel administracyjny</i>
         </a>

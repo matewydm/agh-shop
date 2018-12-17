@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import {Product} from './model/product';
 import {BasketProduct} from './model/basket';
 import {ProductService} from './product.service';
+import {ToastrService} from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BasketService {
 
-  constructor(private prodcutService: ProductService) { }
+  constructor(private toast: ToastrService) { }
 
   getBasket(): BasketProduct[] {
     const item = localStorage.getItem('basket');
@@ -32,6 +33,7 @@ export class BasketService {
         if (item.amount + 1 <= item.product.amount) {
           item.amount++;
         } else {
+          this.toast.warning('Produkt jest już niedostępny');
           console.log('Produkt jest już niedostępny');
         }
       }
@@ -56,6 +58,7 @@ export class BasketService {
       }
     }
     if (!isStored) {
+      this.toast.warning('Dodaj produkt zanim go usuniesz');
       console.log('No ogarnij, najpierw dodaj jak chcesz usuwać');
     }
     localStorage.setItem('basket', JSON.stringify(basket));
