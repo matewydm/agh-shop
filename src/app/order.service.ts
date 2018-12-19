@@ -9,6 +9,7 @@ import {Product} from './model/product';
 import {map} from 'rxjs/internal/operators';
 import {HttpClient} from '@angular/common/http';
 import {RestService} from './rest.service';
+import {ToastrService} from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,7 @@ export class OrderService {
   constructor(private db: AngularFirestore,
               private http: HttpClient,
               private rest: RestService,
+              private toast: ToastrService,
               private productService: ProductService) { }
 
   getOrders(filter: OrderFilter): Observable<any> {
@@ -32,6 +34,7 @@ export class OrderService {
       .pipe(map(this.rest.extractData));
     dare.toPromise()
       .then(e => {
+        this.toast.success('Zamówienie zrealizowane');
         console.log(e);
       })
       .catch(e => {
@@ -45,6 +48,7 @@ export class OrderService {
       .pipe(map(this.rest.extractData));
     dare.toPromise()
       .then(e => {
+        this.toast.success('Zamówienie zaktualizowane');
         console.log(e);
       })
       .catch(e => {

@@ -6,7 +6,10 @@ import { Socket } from 'ngx-socket-io';
   providedIn: 'root'
 })
 export class MessageService {
-  currentMessage  = this.socket.fromEvent<Message>('message');
-  constructor(private socket: Socket) { }
-}
 
+  editProductMessage  = this.socket.fromEvent<Message>('productEdit');
+  promotionMessage = this.socket.fromEvent<Message>('promotion');
+
+  constructor(private socket: Socket) { }
+
+}

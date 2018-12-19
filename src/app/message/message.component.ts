@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {MessageService} from '../message.service';
-import { ToastrService } from 'ngx-toastr';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-message',
@@ -10,23 +10,23 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class MessageComponent implements OnInit, OnDestroy {
 
-  private _mesSub: Subscription;
+  private socketSub: Subscription;
 
   constructor(private messageService: MessageService,
-              private toastService: ToastrService) { }
+              private toast: ToastrService) { }
 
   ngOnInit() {
     console.log('MessageComponent ngOnInit');
-    this._mesSub = this.messageService.currentMessage.subscribe(
+    this.socketSub = this.messageService.promotionMessage.subscribe(
       message => {
-        this.toastService.info('Powiadomienie!', message.content);
+        this.toast.info('Powiadomienie', message.content);
       }
     );
   }
 
   ngOnDestroy() {
     console.log('MessageComponent ngOnDestroy');
-    this._mesSub.unsubscribe();
+    this.socketSub.unsubscribe();
   }
 
 }

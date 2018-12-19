@@ -47,10 +47,16 @@ export class OrderComponent implements OnInit {
 
   realizeOrder(order) {
     this.orderService.realizeOrder(order);
+    this.orderService.getOrders(this.filter).subscribe(e => {
+      this.orders = e;
+    });
   }
 
   realizeSingleItems(order, items) {
     this.orderService.realizeSingleItems(order, items);
+    this.orderService.getOrders(this.filter).subscribe(e => {
+      this.orders = e;
+    });
   }
 
   openSingleItemModal(order: Order) {

@@ -4,6 +4,8 @@ import {Product} from '../model/product';
 import {ProductFilter} from '../model/productFilter';
 import {PagerService} from '../pager.service';
 import {ToastrService} from 'ngx-toastr';
+import {Subscription} from 'rxjs';
+import {MessageService} from '../message.service';
 
 @Component({
   selector: 'app-product-list',
@@ -12,11 +14,14 @@ import {ToastrService} from 'ngx-toastr';
 })
 export class ProductListComponent implements OnInit {
 
+
   constructor(private productService: ProductService,
+              private messageService: MessageService,
               private toast: ToastrService,
               private pagerService: PagerService) {
   }
 
+  private socketSub: Subscription;
   searchText: string;
   filter: ProductFilter;
   categories: String[] = [];
@@ -33,7 +38,10 @@ export class ProductListComponent implements OnInit {
     this.allSize = 6;
     this.categories.push('Odzież');
     this.categories.push('Gadget');
-    this.filter = new ProductFilter(this.searchText, [], this.pageSize, 0, this.pageSize-1);
+    this.filter = new ProductFilter(this.searchText, [], this.pageSize, 0, this.pageSize - 1);
+    this.socketSub = this.messageService.editProductMessage.subscribe(
+      message => { this.getProducts(); }
+    );
     this.getProducts();
     this.setPage(1);
   }
